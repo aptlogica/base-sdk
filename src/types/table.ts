@@ -131,12 +131,6 @@ export interface ImportTable {
 }
 
 export interface ImportAiTable {
-  base_id: string;
-  workspace_id: string;
-  prompt: string;
-}
-
-export interface ImportAiTable {
   prompt: string;
 }
 
