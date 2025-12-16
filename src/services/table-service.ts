@@ -174,7 +174,7 @@ export class TableService {
     }
 
     // Asset-related API methods
-    
+
     // Get bulk assets
     getBulkAssets(params: types.GetBulkAssets) {
         return this.http.post(`/asset/bulk`, params);
@@ -218,5 +218,9 @@ export class TableService {
 
     importAiTable(params: types.ImportAiTable) {
         return this.http.post(`/table/import/ai`, params);
+    }
+
+    applyImportAiTable(params: types.ApplyImportAiTable, schema: string) {
+        return this.http.post(`/table/import/ai/apply`, params);
     }
 }

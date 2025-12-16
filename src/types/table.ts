@@ -135,3 +135,24 @@ export interface ImportAiTable {
   workspace_id: string;
   prompt: string;
 }
+
+export interface ImportAiTable {
+  prompt: string;
+}
+
+export interface AiTableField {
+  name: string;
+  type: string;
+  constraints?: Record<string, any>;
+}
+
+export interface AiTable {
+  name: string;
+  fields: AiTableField[];
+}
+
+export interface ApplyImportAiTable {
+  base_id: string;
+  workspace_id: string;
+  tables: AiTable[];
+}
