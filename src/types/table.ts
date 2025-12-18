@@ -149,4 +149,6 @@ export interface ApplyImportAiTable {
   base_id: string;
   workspace_id: string;
   tables: AiTable[];
+  sample_data:boolean;
+  row:number;
 }
