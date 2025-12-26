@@ -11,12 +11,20 @@ export interface ChangePasswordParams {
 }
 
 export interface AssignToWorkspaceParams {
-  workspace_id: string; 
-  user_id: string; 
-  access_level: string; 
-  bases_ids: string; 
+  user_id: string;
+  membership: MembershipRequest[];
 }
 
+export interface MembershipRequest {
+  workspace_id: string;
+  role: string;
+  bases?: BaseMembership[];
+}
+
+export interface BaseMembership {
+  base_id: string;
+  role: string;
+}
 
 export interface RemoveUserFromWorkspace {
   workspace_id: string; 
