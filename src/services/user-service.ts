@@ -106,7 +106,7 @@ export class UserService {
       formData.append('membership', JSON.stringify(userData.membership));
     }
     
-    return this.http.post(`/tenant/user/create`, formData, {
+    return this.http.post(`/user/create`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
