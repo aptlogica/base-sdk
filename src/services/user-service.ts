@@ -85,12 +85,34 @@ export class UserService {
   }
 
   /**
-   * Create new user (Tenant Admin)
+   * Add new user
    * POST /user/create
    */
-  createUser(params: types.UserCreateRequest) {
-    return this.http.post(`/user/create`, params);
+  async addUser(userData: types.AddUserRequest) {
+    const formData = new FormData();
+    formData.append('email', userData.email);
+    formData.append('firstname', userData.firstname);
+    formData.append('lastname', userData.lastname);
+    
+    if (userData.profile_pic) {
+      formData.append('profile_pic', userData.profile_pic);
+    }
+    
+    if (userData.is_coowner !== undefined) {
+      formData.append('is_coowner', String(userData.is_coowner));
+    }
+    
+    if (userData.membership) {
+      formData.append('membership', JSON.stringify(userData.membership));
+    }
+    
+    return this.http.post(`/tenant/user/create`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   }
+
 
   /**
    * Remove/delete user (Tenant Admin)
