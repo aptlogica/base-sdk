@@ -6,6 +6,7 @@ import { TableService } from './services/table-service';
 import { ClientConfig } from './types';
 import { UserService } from './services/user-service';
 import { AssetService } from './services/asset-service';
+import { OrganizationService } from './services/organization-service';
 
 export class SereniBaseClient {
   private http: HttpClient;
@@ -16,6 +17,7 @@ export class SereniBaseClient {
   public readonly tableService: TableService;
   public readonly userService: UserService;
   public readonly assetService: AssetService;
+  public readonly organization: OrganizationService;
 
   constructor(config: ClientConfig) {
     this.http = new HttpClient(config);
@@ -27,6 +29,7 @@ export class SereniBaseClient {
     this.tableService = new TableService(this.http);
     this.userService = new UserService(this.http);
     this.assetService = new AssetService(this.http);
+    this.organization = new OrganizationService(this.http);
   }
 
   /**
