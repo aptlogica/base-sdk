@@ -69,6 +69,14 @@ export class UserService {
   }
 
   /**
+   * Get user roles and access
+   * GET /user/roles-and-access
+   */
+  getUserRolesAndAccess() {
+    return this.http.get(`/user/roles-and-access`);
+  }
+
+  /**
    * Assign user to workspace
    * POST /user/assign
    */
@@ -164,4 +172,8 @@ export class UserService {
   ) {
     return this.http.post(`/workspace/${workspaceId}/remove`, params);
   }
+
+
+  
 }
+
