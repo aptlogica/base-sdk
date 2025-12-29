@@ -1,0 +1,1123 @@
+// ============================================================================
+// Sereni-Base API Documentation
+// Complete API endpoints with TypeScript request/response interfaces
+// ============================================================================
+
+// ============================================================================
+// AUTH ENDPOINTS - /api/v1/auth
+// ============================================================================
+
+/**
+ * POST /api/v1/auth/login
+ * Public endpoint - No authentication required
+ * Description: Login with email and password
+ */
+interface AuthLoginRequest {
+  email: string;          // user email address (required, email format)
+  password: string;       // user password (required, min 8 characters)
+}
+
+interface AuthLoginResponse {
+  user: UserResponse;
+  token: {
+    access_token: string;   // JWT access token
+    refresh_token: string;  // JWT refresh token
+  };
+}
+
+/**
+ * POST /api/v1/auth/otp/verify
+ * Public endpoint - No authentication required
+ * Description: Verify email with OTP
+ */
+interface AuthVerifyEmailRequest {
+  token: string;          // JWT token (required)
+  otp: string;            // One-time password (required, 6 digits)
+}
+
+/**
+ * POST /api/v1/auth/otp/resend
+ * Public endpoint - No authentication required
+ * Description: Resend OTP
+ */
+interface AuthResendOTPRequest {
+  token: string;          // JWT token (required)
+}
+
+/**
+ * POST /api/v1/auth/forgot-password
+ * Public endpoint - No authentication required
+ * Description: Request password reset
+ */
+interface AuthForgotPasswordRequest {
+  email: string;          // user email (required, email format)
+}
+
+interface AuthForgotPasswordResponse {
+  message: string;        // Success message
+}
+
+/**
+ * POST /api/v1/auth/reset-password
+ * Public endpoint - No authentication required
+ * Description: Reset password with token
+ */
+interface AuthResetPasswordRequest {
+  token: string;          // Reset token UUID (required)
+  new_password: string;   // New password (required, min 8 characters)
+}
+
+/**
+ * POST /api/v1/auth/validate-token
+ * Public endpoint
+ * Description: Validate if token is valid
+ */
+interface AuthValidateTokenRequest {
+  token: string;          // JWT token (required)
+}
+
+/**
+ * POST /api/v1/auth/verify-token
+ * Public endpoint
+ * Description: Verify token validity
+ */
+interface AuthVerifyTokenRequest {
+  token: string;          // JWT token (required)
+}
+
+/**
+ * POST /api/v1/auth/logout
+ * Protected endpoint - Requires authentication
+ * Description: Logout and invalidate token
+ */
+interface AuthLogoutRequest {
+  token: string;          // JWT token (required)
+}
+
+// ============================================================================
+// USER MANAGEMENT ENDPOINTS - /api/v1/user
+// ============================================================================
+
+/**
+ * GET /api/v1/user/profile/:id
+ * Protected endpoint - Requires authentication
+ * Description: Get user profile by ID
+ */
+interface UserProfileResponse {
+  id: string;             // User UUID
+  email: string;
+  first_name: string;
+  last_name: string;
+  status: string;         // active, inactive, suspended
+  email_verified: boolean;
+  dob?: string;           // Date of birth (YYYY-MM-DD)
+  country?: string;
+  timezone?: string;
+  created_at: string;     // ISO 8601 timestamp
+  updated_at: string;
+  roles?: string[];       // List of roles assigned
+}
+
+/**
+ * PATCH /api/v1/user/profile/:id
+ * Protected endpoint - Requires authentication
+ * Description: Update user profile
+ */
+interface UserUpdateProfileRequest {
+  first_name?: string;
+  last_name?: string;
+  dob?: string;           // Date of birth (YYYY-MM-DD)
+  country?: string;
+  timezone?: string;
+}
+
+/**
+ * POST /api/v1/user/change-password/:id
+ * Protected endpoint - Requires authentication
+ * Description: Change user password
+ */
+interface UserChangePasswordRequest {
+  current_password: string;  // Current password (required)
+  new_password: string;      // New password (required, min 8 chars)
+}
+
+/**
+ * POST /api/v1/user/profile/:id/avatar
+ * Protected endpoint - Requires authentication
+ * Description: Add user avatar (multipart/form-data)
+ */
+interface UserAddAvatarRequest {
+  // File upload as multipart/form-data with field name 'file'
+  file: File;             // Image file (max 5MB based on config)
+}
+
+/**
+ * DELETE /api/v1/user/profile/:id/avatar
+ * Protected endpoint - Requires authentication
+ * Description: Remove user avatar
+ */
+
+/**
+ * GET /api/v1/user/workspaces
+ * Protected endpoint - Requires authentication
+ * Description: Get all workspaces for current user
+ */
+interface UserWorkspacesResponse {
+  id: string;
+  title: string;
+  description?: string;
+  slug: string;
+  status: string;
+  created_at: string;
+}[]
+
+/**
+ * GET /api/v1/user/access-details
+ * Protected endpoint - Requires authentication
+ * Description: Get detailed access information for user
+ */
+interface UserAccessDetailsResponse {
+  user_id: string;
+  workspaces: Array<{
+    workspace_id: string;
+    workspace_name: string;
+    role: string;
+    access_level: string;
+    bases: Array<{
+      base_id: string;
+      base_name: string;
+      role: string;
+      access_level: string;
+    }>;
+  }>;
+}
+
+/**
+ * POST /api/v1/user/assign
+ * Protected endpoint - Requires authentication (Admin/Owner)
+ * Description: Assign user to workspace
+ */
+interface UserAssignRequest {
+  user_id: string;         // User UUID (required)
+  workspace_id: string;    // Workspace UUID (required)
+  role: string;            // Role name (required)
+  access_level?: string;   // Access level (optional)
+}
+
+/**
+ * PUT /api/v1/user/access/update
+ * Protected endpoint - Requires authentication
+ * Description: Update user access permissions
+ */
+interface UserUpdateAccessRequest {
+  user_id: string;         // User UUID (required)
+  workspace_id: string;    // Workspace UUID (required)
+  role: string;            // New role name (required)
+  access_level?: string;   // New access level (optional)
+}
+
+/**
+ * POST /api/v1/user/create
+ * Protected endpoint - Requires authentication (Tenant Admin)
+ * Description: Create new user
+ */
+interface UserCreateRequest {
+  email: string;           // Email (required, unique)
+  first_name: string;      // First name (required)
+  last_name: string;       // Last name (required)
+  password?: string;       // Password (optional, generated if not provided)
+  dob?: string;            // Date of birth (YYYY-MM-DD)
+  country?: string;
+  timezone?: string;
+}
+
+interface UserCreateResponse extends UserProfileResponse {
+  temporary_password?: string;  // If password was generated
+}
+
+/**
+ * POST /api/v1/user/remove
+ * Protected endpoint - Requires authentication (Tenant Admin)
+ * Description: Remove/delete user
+ */
+interface UserRemoveRequest {
+  user_id: string;         // User UUID (required)
+}
+
+/**
+ * POST /api/v1/user/activate
+ * Protected endpoint - Requires authentication (Tenant Admin)
+ * Description: Activate user account
+ */
+interface UserActivateRequest {
+  user_id: string;         // User UUID (required)
+}
+
+/**
+ * POST /api/v1/user/deactivate
+ * Protected endpoint - Requires authentication (Tenant Admin)
+ * Description: Deactivate user account
+ */
+interface UserDeactivateRequest {
+  user_id: string;         // User UUID (required)
+}
+
+/**
+ * GET /api/v1/user/list
+ * Protected endpoint - Requires authentication (Tenant Admin)
+ * Description: Get all users in tenant
+ */
+interface UserListResponse extends UserProfileResponse {}[]
+
+/**
+ * GET /api/v1/user/list-for-assign
+ * Protected endpoint - Requires authentication
+ * Description: Get active users available for assignment
+ */
+
+// ============================================================================
+// WORKSPACE ENDPOINTS - /api/v1/workspace
+// ============================================================================
+
+/**
+ * POST /api/v1/workspace/create
+ * Protected endpoint - Requires authentication
+ * Description: Create new workspace
+ */
+interface WorkspaceCreateRequest {
+  title: string;           // Workspace title (required)
+  description?: string;    // Workspace description (optional)
+  created_by?: string;     // Creator user ID (optional, auto-set)
+}
+
+interface WorkspaceResponse {
+  id: string;              // UUID
+  title: string;
+  description?: string;
+  slug: string;
+  meta?: Record<string, any>;
+  is_default: boolean;
+  status: string;          // active, inactive
+  created_by: string;
+  created_at: string;      // ISO 8601
+  updated_at: string;
+}
+
+/**
+ * GET /api/v1/workspace/
+ * Protected endpoint - Requires authentication
+ * Description: Get all workspaces
+ */
+interface WorkspaceListResponse extends WorkspaceResponse {}[]
+
+/**
+ * GET /api/v1/workspace/:id
+ * Protected endpoint - Requires authentication
+ * Description: Get workspace by ID
+ */
+
+/**
+ * PUT /api/v1/workspace/:id
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Update workspace
+ */
+interface WorkspaceUpdateRequest {
+  title?: string;
+  description?: string;
+  slug?: string;
+  meta?: Record<string, any>;
+  is_default?: boolean;
+  status?: string;
+}
+
+/**
+ * DELETE /api/v1/workspace/:id
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Delete workspace
+ */
+
+/**
+ * GET /api/v1/workspace/:id/tables
+ * Protected endpoint - Requires authentication
+ * Description: Get all tables in workspace
+ */
+interface WorkspaceTablesResponse {
+  id: string;
+  name: string;
+  description?: string;
+  base_id: string;
+  created_at: string;
+}[]
+
+/**
+ * GET /api/v1/workspace/:id/bases
+ * Protected endpoint - Requires authentication
+ * Description: Get all bases in workspace
+ */
+interface WorkspaceBasesResponse {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+  created_at: string;
+}[]
+
+/**
+ * POST /api/v1/workspace/:id/remove
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Remove user from workspace
+ */
+interface WorkspaceRemoveUserRequest {
+  user_id: string;         // User UUID (required)
+}
+
+/**
+ * GET /api/v1/workspace/:id/members
+ * Protected endpoint - Requires authentication
+ * Description: Get workspace members
+ */
+interface WorkspaceMember {
+  id: string;
+  user_id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+  access_level: string;
+  status: string;
+}
+
+interface WorkspaceMembersResponse extends WorkspaceMember {}[]
+
+/**
+ * GET /api/v1/workspace/:id/members-with-roles
+ * Protected endpoint - Requires authentication
+ * Description: Get members with detailed role information
+ */
+interface WorkspaceMemberWithRole extends WorkspaceMember {
+  role_details?: {
+    name: string;
+    description?: string;
+    permissions: string[];
+  };
+}
+
+interface WorkspaceMembersWithRolesResponse extends WorkspaceMemberWithRole {}[]
+
+/**
+ * POST /api/v1/workspace/:id/bulk-add-members
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Add multiple members to workspace
+ */
+interface WorkspaceBulkAddMembersRequest {
+  members: Array<{
+    user_id: string;       // User UUID (required)
+    role: string;          // Role name (required)
+    access_level?: string;
+  }>;
+}
+
+// ============================================================================
+// BASE ENDPOINTS - /api/v1/base
+// ============================================================================
+
+/**
+ * POST /api/v1/base/create
+ * Protected endpoint - Requires authentication
+ * Description: Create new base (database)
+ */
+interface BaseCreateRequest {
+  title: string;           // Base title (required)
+  description?: string;    // Base description (optional)
+  workspace_id?: string;   // Workspace ID (optional)
+}
+
+interface BaseResponse {
+  id: string;              // UUID
+  title: string;
+  description?: string;
+  icon?: string;
+  status: string;
+  workspace_id: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * GET /api/v1/base/:id
+ * Protected endpoint - Requires authentication
+ * Description: Get base by ID
+ */
+
+/**
+ * PUT /api/v1/base/:id
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Update base
+ */
+interface BaseUpdateRequest {
+  title?: string;
+  description?: string;
+  icon?: string;
+  status?: string;
+}
+
+/**
+ * DELETE /api/v1/base/:id
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Delete base
+ */
+
+/**
+ * GET /api/v1/base/:id/tables
+ * Protected endpoint - Requires authentication
+ * Description: Get all tables in base
+ */
+
+/**
+ * GET /api/v1/base/:id/members
+ * Protected endpoint - Requires authentication
+ * Description: Get base members
+ */
+
+/**
+ * GET /api/v1/base/:id/members-with-roles
+ * Protected endpoint - Requires authentication
+ * Description: Get members with role details
+ */
+
+/**
+ * POST /api/v1/base/:id/bulk-add-members
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Add multiple members to base
+ */
+interface BaseBulkAddMembersRequest {
+  members: Array<{
+    user_id: string;
+    role: string;
+    access_level?: string;
+  }>;
+}
+
+// ============================================================================
+// TABLE ENDPOINTS - /api/v1/table
+// ============================================================================
+
+/**
+ * POST /api/v1/table/create
+ * Protected endpoint - Requires authentication
+ * Description: Create new table
+ */
+interface TableCreateRequest {
+  name: string;            // Table name (required)
+  description?: string;
+  base_id: string;         // Base UUID (required)
+  columns?: ColumnCreateRequest[];
+}
+
+interface ColumnCreateRequest {
+  name: string;            // Column name (required)
+  type: string;            // Data type (required): text, number, email, date, single_select, multiple_select, checkbox, link, lookup, etc.
+  is_primary?: boolean;
+  is_required?: boolean;
+  is_unique?: boolean;
+  meta?: Record<string, any>;  // Type-specific metadata
+}
+
+interface TableResponse {
+  id: string;              // UUID
+  name: string;
+  description?: string;
+  base_id: string;
+  status: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+  columns?: ColumnResponse[];
+  record_count?: number;
+}
+
+interface ColumnResponse {
+  id: string;
+  name: string;
+  type: string;
+  is_primary: boolean;
+  is_required: boolean;
+  is_unique: boolean;
+  meta?: Record<string, any>;
+}
+
+/**
+ * GET /api/v1/table/:id
+ * Protected endpoint - Requires authentication
+ * Description: Get table by ID with optional pagination
+ * Query params: page, page_size
+ */
+
+/**
+ * GET /api/v1/table/
+ * Protected endpoint - Requires authentication
+ * Description: Get all tables
+ */
+
+/**
+ * PATCH /api/v1/table/:id
+ * Protected endpoint - Requires authentication
+ * Description: Update table
+ */
+interface TableUpdateRequest {
+  name?: string;
+  description?: string;
+  status?: string;
+}
+
+/**
+ * DELETE /api/v1/table/:id
+ * Protected endpoint - Requires authentication
+ * Description: Delete table
+ */
+
+/**
+ * POST /api/v1/table/import
+ * Protected endpoint - Requires authentication
+ * Description: Import table from CSV/file
+ */
+interface TableImportRequest {
+  // Multipart form data with CSV file
+  file: File;
+  table_name: string;
+  base_id: string;
+  has_headers?: boolean;
+}
+
+/**
+ * GET /api/v1/table/:id/columns
+ * Protected endpoint - Requires authentication
+ * Description: Get all columns in table
+ */
+
+/**
+ * GET /api/v1/table/:id/views
+ * Protected endpoint - Requires authentication
+ * Description: Get all views for table
+ */
+
+/**
+ * GET /api/v1/table/:id/records
+ * Protected endpoint - Requires authentication
+ * Description: Get all records in table
+ * Query params: page, page_size, filter, sort, search
+ */
+interface TableRecordsResponse {
+  total: number;
+  page: number;
+  page_size: number;
+  records: Record<string, any>[];
+}
+
+// ============================================================================
+// COLUMN ENDPOINTS - /api/v1/column
+// ============================================================================
+
+/**
+ * POST /api/v1/column/create
+ * Protected endpoint - Requires authentication
+ * Description: Create new column in table
+ */
+interface ColumnCreateEndpointRequest {
+  table_id: string;        // Table UUID (required)
+  name: string;            // Column name (required)
+  type: string;            // Data type (required)
+  is_required?: boolean;
+  is_unique?: boolean;
+  meta?: Record<string, any>;
+}
+
+/**
+ * GET /api/v1/column/:id
+ * Protected endpoint - Requires authentication
+ * Description: Get column by ID
+ */
+
+/**
+ * GET /api/v1/column/
+ * Protected endpoint - Requires authentication
+ * Description: Get all columns
+ */
+
+/**
+ * PATCH /api/v1/column/:id
+ * Protected endpoint - Requires authentication
+ * Description: Update column
+ */
+interface ColumnUpdateRequest {
+  name?: string;
+  type?: string;
+  is_required?: boolean;
+  is_unique?: boolean;
+  meta?: Record<string, any>;
+}
+
+/**
+ * DELETE /api/v1/column/:id
+ * Protected endpoint - Requires authentication
+ * Description: Delete column
+ */
+
+/**
+ * POST /api/v1/column/reorder
+ * Protected endpoint - Requires authentication
+ * Description: Reorder columns in table
+ */
+interface ColumnReorderRequest {
+  column_ids: string[];   // Ordered list of column UUIDs
+}
+
+// ============================================================================
+// ROW ENDPOINTS - /api/v1/row
+// ============================================================================
+
+/**
+ * POST /api/v1/row/create
+ * Protected endpoint - Requires authentication
+ * Description: Create new record/row
+ */
+interface RowCreateRequest {
+  table_id: string;        // Table UUID (required)
+  data: Record<string, any>;  // Column data (column_name: value)
+}
+
+interface RowResponse {
+  id: string;              // Row UUID
+  table_id: string;
+  data: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * POST /api/v1/row/remove
+ * Protected endpoint - Requires authentication
+ * Description: Delete row(s)
+ */
+interface RowDeleteRequest {
+  row_ids: string[];       // Array of row UUIDs to delete
+}
+
+/**
+ * POST /api/v1/row/data/insert
+ * Protected endpoint - Requires authentication
+ * Description: Insert row data
+ */
+interface RowDataInsertRequest {
+  table_id: string;
+  row_id?: string;
+  data: Record<string, any>;
+}
+
+/**
+ * POST /api/v1/row/data/relation
+ * Protected endpoint - Requires authentication
+ * Description: Insert relationship/link data between rows
+ */
+interface RowDataRelationRequest {
+  from_table_id: string;
+  from_row_id: string;
+  to_table_id: string;
+  to_row_id: string;
+  relation_type?: string;  // one_to_one, one_to_many, many_to_many
+}
+
+/**
+ * POST /api/v1/row/attachment/add
+ * Protected endpoint - Requires authentication
+ * Description: Add attachment to row (multipart/form-data)
+ */
+interface RowAttachmentAddRequest {
+  model_id: string;        // Row UUID (form field)
+  column_id: string;       // Column UUID (form field)
+  files: File[];           // Multiple files (form field 'files')
+}
+
+/**
+ * POST /api/v1/row/attachment/remove
+ * Protected endpoint - Requires authentication
+ * Description: Remove attachment from row
+ */
+interface RowAttachmentRemoveRequest {
+  attachment_ids: string[];  // Array of attachment UUIDs
+}
+
+// ============================================================================
+// VIEW ENDPOINTS - /api/v1/view
+// ============================================================================
+
+/**
+ * POST /api/v1/view/create
+ * Protected endpoint - Requires authentication
+ * Description: Create view of table data
+ */
+interface ViewCreateRequest {
+  table_id: string;        // Table UUID (required)
+  name: string;            // View name (required)
+  type: string;            // grid, calendar, gallery, kanban, timeline
+  filters?: FilterConfig[];
+  sort?: SortConfig[];
+  meta?: Record<string, any>;
+}
+
+interface FilterConfig {
+  column_id: string;
+  operator: string;        // =, !=, <, >, <=, >=, contains, in, etc.
+  value: any;
+}
+
+interface SortConfig {
+  column_id: string;
+  direction: 'asc' | 'desc';
+}
+
+interface ViewResponse {
+  id: string;
+  table_id: string;
+  name: string;
+  type: string;
+  filters?: FilterConfig[];
+  sort?: SortConfig[];
+  meta?: Record<string, any>;
+  created_at: string;
+}
+
+/**
+ * GET /api/v1/view/:id
+ * Protected endpoint - Requires authentication
+ * Description: Get view by ID
+ */
+
+/**
+ * GET /api/v1/view/
+ * Protected endpoint - Requires authentication
+ * Description: Get all views
+ */
+
+/**
+ * PATCH /api/v1/view/:id
+ * Protected endpoint - Requires authentication
+ * Description: Update view
+ */
+interface ViewUpdateRequest {
+  name?: string;
+  type?: string;
+  filters?: FilterConfig[];
+  sort?: SortConfig[];
+  meta?: Record<string, any>;
+}
+
+/**
+ * DELETE /api/v1/view/:id
+ * Protected endpoint - Requires authentication
+ * Description: Delete view
+ */
+
+// ============================================================================
+// ASSET ENDPOINTS - /api/v1/asset
+// ============================================================================
+
+/**
+ * POST /api/v1/asset/upload
+ * Protected endpoint - Requires authentication
+ * Description: Upload assets/files (multipart/form-data)
+ */
+interface AssetUploadRequest {
+  // Multiple files - form field 'files'
+  files: File[];
+  description?: string;
+  tags?: string[];
+}
+
+interface AssetResponse {
+  id: string;              // UUID
+  filename: string;
+  original_filename: string;
+  file_type: string;       // mime type
+  file_size: number;       // bytes
+  url: string;             // public URL
+  storage_path: string;
+  created_at: string;
+}
+
+/**
+ * POST /api/v1/asset/upload-image
+ * Protected endpoint - Requires authentication
+ * Description: Upload single image (optimized)
+ */
+interface AssetUploadImageRequest {
+  file: File;              // Single image file
+  optimize?: boolean;      // Apply optimization
+}
+
+/**
+ * POST /api/v1/asset/bulk
+ * Protected endpoint - Requires authentication
+ * Description: Get multiple assets by IDs
+ */
+interface AssetBulkRequest {
+  asset_ids: string[];     // Array of asset UUIDs
+}
+
+interface AssetBulkResponse extends AssetResponse {}[]
+
+/**
+ * PATCH /api/v1/asset/:id
+ * Protected endpoint - Requires authentication
+ * Description: Update asset metadata
+ */
+interface AssetUpdateRequest {
+  filename?: string;
+  description?: string;
+  tags?: string[];
+}
+
+/**
+ * DELETE /api/v1/asset/:id
+ * Protected endpoint - Requires authentication
+ * Description: Delete asset
+ */
+
+// ============================================================================
+// ORGANIZATION ENDPOINTS - /api/v1/organization
+// ============================================================================
+
+/**
+ * GET /api/v1/organization
+ * Protected endpoint - Requires authentication
+ * Description: Get all organizations (user is member of)
+ */
+interface OrganizationResponse {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  logo_url?: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface OrganizationListResponse extends OrganizationResponse {}[]
+
+/**
+ * PUT /api/v1/organization/:id
+ * Protected endpoint - Requires authentication (Admin)
+ * Description: Update organization
+ */
+interface OrganizationUpdateRequest {
+  name?: string;
+  slug?: string;
+  description?: string;
+  logo_url?: string;
+  status?: string;
+}
+
+// ============================================================================
+// HEALTH CHECK ENDPOINTS
+// ============================================================================
+
+/**
+ * GET /api/v1/health
+ * Public endpoint - No authentication required
+ * Description: Health check endpoint
+ */
+interface HealthCheckResponse {
+  status: 'ok';
+  message: string;
+  version: string;
+  features: string[];
+}
+
+/**
+ * GET /api/v1/auth/health
+ * Public endpoint
+ * Description: Auth service health check
+ */
+
+/**
+ * GET /api/v1/auth/healthy
+ * Public endpoint
+ * Description: Liveness probe
+ */
+
+/**
+ * GET /api/v1/auth/ready
+ * Public endpoint
+ * Description: Readiness probe
+ */
+
+// ============================================================================
+// COMMON RESPONSE WRAPPER
+// ============================================================================
+
+/**
+ * All API responses follow this wrapper format
+ */
+interface APIResponse<T> {
+  success: boolean;
+  message: string;
+  description?: string;
+  data?: T;
+  code?: string;           // Error code for failures
+  timestamp: string;       // ISO 8601
+}
+
+interface APIErrorResponse {
+  success: false;
+  message: string;
+  description: string;
+  code: string;            // e.g., "AUTH_ERR_1001"
+  timestamp: string;
+  details?: Record<string, any>;
+}
+
+// ============================================================================
+// PAGINATION & FILTERING
+// ============================================================================
+
+interface PaginationParams {
+  page?: number;           // Page number (1-indexed)
+  page_size?: number;      // Items per page (default: 20, max: 100)
+  limit?: number;          // Alternative to page_size
+  offset?: number;         // Alternative to page
+}
+
+interface PaginatedResponse<T> {
+  total: number;           // Total count
+  page: number;
+  page_size: number;
+  items: T[];
+}
+
+interface FilterOperators {
+  'eq': any;               // equals
+  'ne': any;               // not equals
+  'gt': any;               // greater than
+  'gte': any;              // greater than or equal
+  'lt': any;               // less than
+  'lte': any;              // less than or equal
+  'like': string;          // text contains
+  'in': any[];             // value in array
+  'exists': boolean;       // field exists
+  'between': [any, any];   // range
+}
+
+interface SortParams {
+  sort_by?: string;        // Column name
+  order?: 'asc' | 'desc';
+}
+
+// ============================================================================
+// COMMON ERRORS
+// ============================================================================
+
+/**
+ * Common Error Response Codes
+ */
+enum ErrorCodes {
+  // Auth Errors (3xxx)
+  UNAUTHORIZED = 'AUTH_ERR_3000',
+  INVALID_CREDENTIALS = 'AUTH_ERR_3001',
+  TOKEN_EXPIRED = 'AUTH_ERR_3002',
+  TOKEN_INVALID = 'AUTH_ERR_3003',
+  INSUFFICIENT_PERMISSIONS = 'AUTH_ERR_3004',
+  SESSION_EXPIRED = 'AUTH_ERR_3005',
+
+  // Validation Errors (4xxx)
+  INVALID_PAYLOAD = 'ERR_4000',
+  MISSING_REQUIRED_FIELD = 'ERR_4001',
+  INVALID_EMAIL_FORMAT = 'ERR_4002',
+  PASSWORD_TOO_SHORT = 'ERR_4003',
+  DUPLICATE_EMAIL = 'ERR_4004',
+  INVALID_UUID = 'ERR_4005',
+
+  // Not Found (5xxx)
+  RESOURCE_NOT_FOUND = 'ERR_5000',
+  USER_NOT_FOUND = 'ERR_5001',
+  WORKSPACE_NOT_FOUND = 'ERR_5002',
+  TABLE_NOT_FOUND = 'ERR_5003',
+  COLUMN_NOT_FOUND = 'ERR_5004',
+  BASE_NOT_FOUND = 'ERR_5005',
+
+  // Server Errors (6xxx)
+  INTERNAL_SERVER_ERROR = 'ERR_6000',
+  DATABASE_ERROR = 'ERR_6001',
+  EXTERNAL_SERVICE_ERROR = 'ERR_6002',
+}
+
+// ============================================================================
+// REQUEST HEADERS
+// ============================================================================
+
+/**
+ * Required/Optional headers for all requests
+ */
+interface RequestHeaders {
+  'Content-Type': 'application/json' | 'multipart/form-data';
+  'Authorization': 'Bearer <access_token>';  // Required for protected endpoints
+  'X-Request-ID'?: string;                   // Optional, for tracing
+  'Accept-Language'?: string;                // Optional, for localization
+}
+
+// ============================================================================
+// MIDDLEWARE & CONTEXT
+// ============================================================================
+
+/**
+ * Context set by authentication middleware
+ */
+interface AuthContext {
+  user_id: string;         // Current user UUID
+  email: string;
+  roles: string[];
+  workspace_id?: string;   // Current workspace context
+  base_id?: string;        // Current base context
+}
+
+/**
+ * Request context with tenant/schema info
+ */
+interface TenantContext {
+  schema: string;          // Database schema name
+  tenant_id: string;
+  organization_id: string;
+}
+
+// ============================================================================
+// API BASE URL
+// ============================================================================
+
+/**
+ * API Base URL configuration
+ * Development: http://localhost:8080/api/v1
+ * Production: https://api.serenibase.com/api/v1
+ */
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api/v1';
+
+// ============================================================================
+// AUTHENTICATION FLOW
+// ============================================================================
+
+/**
+ * 1. Login
+ *    POST /api/v1/auth/login
+ *    Response: { user, token: { access_token, refresh_token } }
+ *
+ * 2. Use access_token in Authorization header for all requests
+ *    Header: Authorization: Bearer <access_token>
+ *
+ * 3. If access_token expires, use refresh_token to get new one
+ *    POST /api/v1/auth/refresh-token
+ *
+ * 4. Logout
+ *    POST /api/v1/auth/logout
+ */
+
+export {};

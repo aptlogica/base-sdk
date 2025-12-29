@@ -1,16 +1,15 @@
 export interface CreateWorkspace {
   title: string;
-  description: string;
+  description?: string;
 }
 
 export interface UpdateWorkspace {
   title?: string;
   description?: string;
   slug?: string;
-  settings?: any;
+  meta?: Record<string, any>;
   is_default?: boolean;
   status?: string;
-  updated_at?: string;
 }
 
 export interface InviteUser {
@@ -21,7 +20,6 @@ export interface InviteUser {
 }
 
 export interface RemoveUserFromWorkspace {
-  workspace_id: string;
   user_id: string;
 }
 
@@ -29,7 +27,15 @@ export interface InviteMultipleUsers {
   workspace_id: string;
   user_ids: string[];
   access_level: "full_access" | "limited_access";
-  bases_ids?: string; // Required for limited_access, comma-separated base IDs
+  bases_ids?: string;
+}
+
+export interface BulkAddMembersRequest {
+  members: Array<{
+    user_id: string;
+    role: string;
+    access_level?: string;
+  }>;
 }
 
 export interface MemberAddSuccess {

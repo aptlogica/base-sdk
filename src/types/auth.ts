@@ -15,8 +15,16 @@ export interface VerifyOtpParams {
   otp: string;
 }
 
+export interface ValidateTokenParams {
+  token: string;
+}
+
+export interface VerifyTokenParams {
+  token: string;
+}
+
 export interface RefreshTokenParams {
-  refresh_token:string
+  refresh_token: string;
 }
 
 export interface ResendOtpParams {

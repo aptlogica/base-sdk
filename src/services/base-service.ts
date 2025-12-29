@@ -1,42 +1,78 @@
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/base';
 
-export class BaseService    {
+export class BaseService {
     constructor(private http: HttpClient) {}
 
-    // Create a new base
+    /**
+     * Create new base (database)
+     * POST /base/create
+     */
     create(params: types.CreateBase) {
         return this.http.post(`/base/create`, params);
     }
 
-    // Get a base by ID
+    /**
+     * Get base by ID
+     * GET /base/:id
+     */
     getById(id: string) {
         return this.http.get(`/base/${id}`);
     }
 
-    // Get tables by base ID
-    getTablesByBaseId(id: string) {
-        return this.http.get(`/base/${id}/tables`);
-    }
-
-    // Get all bases
-    getAll() {
-        return this.http.get(`/base/`);
-    }
-
-    // Update a base by ID
+    /**
+     * Update base
+     * PUT /base/:id
+     */
     update(id: string, params: types.UpdateBase) {
         return this.http.put(`/base/${id}`, params);
     }
 
-    // Delete a base by ID
+    /**
+     * Delete base
+     * DELETE /base/:id
+     */
     delete(id: string) {
         return this.http.delete(`/base/${id}`);
     }
 
-    // Get base members
-    getMembers(id:string){
+    /**
+     * Get all tables in base
+     * GET /base/:id/tables
+     */
+    getTablesByBaseId(id: string) {
+        return this.http.get(`/base/${id}/tables`);
+    }
+
+    /**
+     * Get all bases
+     * GET /base/
+     */
+    getAll() {
+        return this.http.get(`/base/`);
+    }
+
+    /**
+     * Get base members
+     * GET /base/:id/members
+     */
+    getMembers(id: string) {
         return this.http.get(`/base/${id}/members`);
     }
 
+    /**
+     * Get members with role details
+     * GET /base/:id/members-with-roles
+     */
+    getMembersWithRoles(id: string) {
+        return this.http.get(`/base/${id}/members-with-roles`);
+    }
+
+    /**
+     * Add multiple members to base
+     * POST /base/:id/bulk-add-members
+     */
+    bulkAddMembers(id: string, params: types.BulkAddMembersRequest) {
+        return this.http.post(`/base/${id}/bulk-add-members`, params);
+    }
 }

@@ -5,7 +5,6 @@ import { BaseService } from './services/base-service';
 import { TableService } from './services/table-service';
 import { ClientConfig } from './types';
 import { UserService } from './services/user-service';
-import { TenantService } from './services/tenant-service';
 import { AssetService } from './services/asset-service';
 
 export class SereniBaseClient {
@@ -15,8 +14,7 @@ export class SereniBaseClient {
   public readonly workspace: WorkspaceService;
   public readonly baseService: BaseService;
   public readonly tableService: TableService;
-  public readonly userService:UserService;
-  public readonly tenantService: TenantService;
+  public readonly userService: UserService;
   public readonly assetService: AssetService;
 
   constructor(config: ClientConfig) {
@@ -27,8 +25,7 @@ export class SereniBaseClient {
     this.workspace = new WorkspaceService(this.http);
     this.baseService = new BaseService(this.http);
     this.tableService = new TableService(this.http);
-    this.userService = new UserService(this.http)
-    this.tenantService = new TenantService(this.http)
+    this.userService = new UserService(this.http);
     this.assetService = new AssetService(this.http);
   }
 

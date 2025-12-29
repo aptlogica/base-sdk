@@ -4,62 +4,142 @@ import * as types from "../types/user";
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  // Get current user profile
+  /**
+   * Get user profile by ID
+   * GET /user/profile/:id
+   */
   getProfile(id: string) {
     return this.http.get(`/user/profile/${id}`);
   }
 
-  // Update current user profile
+  /**
+   * Update user profile
+   * PATCH /user/profile/:id
+   */
   updateProfile(id: string, params: types.UpdateUserProfileParams) {
     return this.http.patch(`/user/profile/${id}`, params);
   }
 
-  // Change password
+  /**
+   * Change user password
+   * POST /user/change-password/:id
+   */
   changePassword(id: string, params: types.ChangePasswordParams) {
     return this.http.post(`/user/change-password/${id}`, params);
   }
 
-  // Add or update user avatar
+  /**
+   * Add or update user avatar
+   * POST /user/profile/:id/avatar
+   */
   addOrUpdateAvatar(id: string, avatarFile: File) {
     const formData = new FormData();
-    formData.append("avatar", avatarFile);
+    formData.append("file", avatarFile);
     return this.http.post(`/user/profile/${id}/avatar`, formData, {
       headers: {
-        "content-type": "multipart/form-data",
+        "Content-Type": "multipart/form-data",
       },
     });
   }
 
-  // Remove user avatar
+  /**
+   * Remove user avatar
+   * DELETE /user/profile/:id/avatar
+   */
   removeAvatar(id: string) {
     return this.http.delete(`/user/profile/${id}/avatar`);
   }
 
-  // Get workspaces for a user
+  /**
+   * Get all workspaces for current user
+   * GET /user/workspaces
+   */
   getWorkspaces() {
     return this.http.get(`/user/workspaces`);
   }
 
-  // Assign user to workspace
+  /**
+   * Get detailed access information for user
+   * GET /user/access-details
+   */
+  getUserAccessDetails() {
+    return this.http.get<types.UserAccessDetailsResponse>(
+      `/user/access-details`
+    );
+  }
+
+  /**
+   * Assign user to workspace
+   * POST /user/assign
+   */
   assignToWorkspace(params: types.AssignToWorkspaceParams) {
     return this.http.post(`/user/assign`, params);
   }
 
+  /**
+   * Update user access permissions
+   * PUT /user/access/update
+   */
+  updateUserAccess(params: types.UpdateUserAccessParams) {
+    return this.http.put(`/user/access/update`, params);
+  }
+
+  /**
+   * Create new user (Tenant Admin)
+   * POST /user/create
+   */
+  createUser(params: types.UserCreateRequest) {
+    return this.http.post(`/user/create`, params);
+  }
+
+  /**
+   * Remove/delete user (Tenant Admin)
+   * POST /user/remove
+   */
+  removeUser(params: types.UserRemoveRequest) {
+    return this.http.post(`/user/remove`, params);
+  }
+
+  /**
+   * Activate user account (Tenant Admin)
+   * POST /user/activate
+   */
+  activateUser(params: types.UserActivateRequest) {
+    return this.http.post(`/user/activate`, params);
+  }
+
+  /**
+   * Deactivate user account (Tenant Admin)
+   * POST /user/deactivate
+   */
+  deactivateUser(params: types.UserDeactivateRequest) {
+    return this.http.post(`/user/deactivate`, params);
+  }
+
+  /**
+   * Get all users in tenant (Tenant Admin)
+   * GET /user/list
+   */
+  listUsers() {
+    return this.http.get(`/user/list`);
+  }
+
+  /**
+   * Get active users available for assignment
+   * GET /user/list-for-assign
+   */
+  listUsersForAssign() {
+    return this.http.get(`/user/list-for-assign`);
+  }
+
+  /**
+   * Remove user from workspace
+   * POST /workspace/:id/remove
+   */
   removeFromWorkspace(
     workspaceId: string,
     params: types.RemoveUserFromWorkspace
   ) {
     return this.http.post(`/workspace/${workspaceId}/remove`, params);
-  }
-
-  // Get user's workspace and base access details
-  getUserAccessDetails(userId: string, workspaceId?: string) {
-    const params = new URLSearchParams({ user_id: userId });
-    if (workspaceId) {
-      params.append("workspace_id", workspaceId);
-    }
-    return this.http.get<types.UserAccessDetailsResponse>(
-      `/user/access-details?user_id=${userId}`
-    );
   }
 }
