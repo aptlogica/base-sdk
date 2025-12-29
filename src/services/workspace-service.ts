@@ -99,6 +99,14 @@ export class WorkspaceService {
   }
 
   /**
+   * Remove access member from workspace
+   * DELETE /workspace/:id/access/:id
+   */
+  removeAccessMember(workspaceId: string, accessId: string) {
+    return this.http.delete(`/workspace/${workspaceId}/access/${accessId}`);
+  }
+
+  /**
    * Invite multiple users to the workspace (deprecated - use bulkAddMembers)
    * @deprecated Use bulkAddMembers instead
    */

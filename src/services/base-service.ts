@@ -72,7 +72,15 @@ export class BaseService {
      * Add multiple members to base
      * POST /base/:id/bulk-add-members
      */
-    bulkAddMembers(id: string, params: types.BulkAddMembersRequest) {
+    bulkAddMembers(id: string, params: types.BulkAddBaseMembersRequest) {
         return this.http.post(`/base/${id}/bulk-add-members`, params);
+    }
+
+    /**
+     * Remove access member from base
+     * DELETE /base/:id/access/:id
+     */
+    removeAccessMember(baseId: string, accessId: string) {
+        return this.http.delete(`/base/${baseId}/access/${accessId}`);
     }
 }

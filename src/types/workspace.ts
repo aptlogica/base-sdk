@@ -33,8 +33,7 @@ export interface InviteMultipleUsers {
 }
 
 export interface BulkAddMembersRequest {
-  user_id: string;
-  memberships: MembershipRequest[];
+  members : BulkMemberRequest[];
 }
 
 export interface BulkMemberRequest {

@@ -1,5 +1,5 @@
 
-import { MembershipRequest, BaseMembership } from "./user";
+import { MembershipRequest } from "./user";
 
 export interface CreateBase {
   title: string;
@@ -20,10 +20,5 @@ export interface BulkAddMembersRequest {
 }
 
 export interface BulkAddBaseMembersRequest {
-  members: BulkBaseMemberRequest[];
-}
-
-export interface BulkBaseMemberRequest {
-  user_id: string;
-  base_role: BaseMembership[];
+  members: BulkAddMembersRequest[];
 }
