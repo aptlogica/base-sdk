@@ -72,8 +72,8 @@ export class UserService {
    * Get user roles and access
    * GET /user/roles-and-access
    */
-  getUserRolesAndAccess() {
-    return this.http.get(`/user/roles-and-access`);
+  getUserRolesAndAccess(id: string) {
+    return this.http.get(`/user/roles-and-access/${id}`);
   }
 
   /**
