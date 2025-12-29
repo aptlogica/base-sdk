@@ -1,3 +1,5 @@
+import { MembershipRequest } from "./user";
+
 export interface CreateWorkspace {
   title: string;
   description?: string;
@@ -31,11 +33,13 @@ export interface InviteMultipleUsers {
 }
 
 export interface BulkAddMembersRequest {
-  members: Array<{
-    user_id: string;
-    role: string;
-    access_level?: string;
-  }>;
+  user_id: string;
+  memberships: MembershipRequest[];
+}
+
+export interface BulkMemberRequest {
+  user_id: string;
+  memberships: MembershipRequest[];
 }
 
 export interface MemberAddSuccess {

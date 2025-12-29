@@ -1,4 +1,6 @@
 
+import { MembershipRequest, BaseMembership } from "./user";
+
 export interface CreateBase {
   title: string;
   description?: string;
@@ -13,9 +15,15 @@ export interface UpdateBase {
 }
 
 export interface BulkAddMembersRequest {
-  members: Array<{
-    user_id: string;
-    role: string;
-    access_level?: string;
-  }>;
+  user_id: string;
+  memberships: MembershipRequest[];
+}
+
+export interface BulkAddBaseMembersRequest {
+  members: BulkBaseMemberRequest[];
+}
+
+export interface BulkBaseMemberRequest {
+  user_id: string;
+  base_role: BaseMembership[];
 }
