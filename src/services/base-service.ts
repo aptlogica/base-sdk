@@ -99,8 +99,8 @@ export class BaseService {
      * Remove access member from base
      * DELETE /base/:id/access/:id
      */
-    removeAccessMember(baseId: string, accessId: string) {
-        return this.http.delete(`/base/${baseId}/access/${accessId}`);
+    removeAccessMember(accessId: string) {
+        return this.http.delete(`/base/access/${accessId}`);
     }
 
     /**
