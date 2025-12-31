@@ -71,9 +71,11 @@ export class UserService {
   /**
    * Get user roles and access
    * GET /user/roles-and-access
+   * @param scopeId - Optional scope ID to filter by (e.g., workspace ID)
    */
-  getUserRolesAndAccess(id: string) {
-    return this.http.get(`/user/roles-and-access/${id}`);
+  getUserRolesAndAccess(scopeId?: string) {
+    const params = scopeId ? { scope_id: scopeId } : undefined;
+    return this.http.get(`/user/roles-and-access`, { params });
   }
 
   /**
