@@ -124,4 +124,15 @@ export class BaseService {
     deleteImage(id: string) {
         return this.http.delete(`/base/${id}/image`);
     }
+
+    /**
+       * Remove user from base
+       * POST /base/:id/remove
+       */
+      removeUserFromBase(
+        baseId: string,
+        params: types.RemoveUserFromBase
+      ) {
+        return this.http.post(`/base/${baseId}/remove`, params);
+      }
 }

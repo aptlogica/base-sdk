@@ -23,3 +23,7 @@ export interface BulkAddMembersRequest {
 export interface BulkAddBaseMembersRequest {
   members: BulkAddMembersRequest[];
 }
+
+export interface RemoveUserFromBase {
+  user_id: string;
+}
