@@ -13,6 +13,8 @@ export interface UpdateBase {
   description?: string;
   icon?: string;
   status?: string;
+  visibility?: string;
+  image?: File | Blob;
 }
 
 export interface BulkAddMembersRequest {

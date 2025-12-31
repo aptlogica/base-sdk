@@ -44,7 +44,37 @@ export class BaseService {
      * PUT /base/:id
      */
     update(id: string, params: types.UpdateBase) {
-        return this.http.put(`/base/${id}`, params);
+        const formData = new FormData();
+        
+        if (params.title !== undefined) {
+            formData.append('title', params.title);
+        }
+        
+        if (params.description !== undefined) {
+            formData.append('description', params.description);
+        }
+        
+        if (params.icon !== undefined) {
+            formData.append('icon', params.icon);
+        }
+        
+        if (params.status !== undefined) {
+            formData.append('status', params.status);
+        }
+        
+        if (params.visibility !== undefined) {
+            formData.append('visibility', params.visibility);
+        }
+        
+        if (params.image) {
+            formData.append('image', params.image);
+        }
+        
+        return this.http.put(`/base/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     }
 
     /**
