@@ -208,8 +208,9 @@ export class TableService {
         extra?: (progressEvent: ProgressEvent) => void
     ) {
         const formData = new FormData();
-        formData.append('model_id', params.model_id);
-        formData.append('column_id', params.column_id);
+        formData.append('model_id', params.model_id.toString());
+        formData.append('column_id', params.column_id.toString());
+        formData.append('row_id', params.row_id.toString());
         if (Array.isArray(params.files)) {
             params.files.forEach((file) => {
                 formData.append('files', file);
