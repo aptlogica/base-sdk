@@ -170,6 +170,14 @@ export class TableService {
     }
 
     /**
+     * Bulk delete multiple rows
+     * POST /row/bulk-remove
+     */
+    bulkDeleteRow(params: types.BulkDeleteRow) {
+        return this.http.post(`/row/bulk-remove`, params);
+    }
+
+    /**
      * Insert row data
      * POST /row/data/insert
      */
