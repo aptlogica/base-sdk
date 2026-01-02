@@ -2,7 +2,7 @@ import { HttpClient } from '../client/http-client';
 import * as types from '../types/table';
 
 export class TableService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     // ============ TABLE ENDPOINTS ============
 
@@ -60,7 +60,9 @@ export class TableService {
         extra?: (progressEvent: ProgressEvent) => void
     ) {
         const formData = new FormData();
-        formData.append('base_id', params.base_id);
+        if (params.base_id) {
+            formData.append('base_id', params.base_id);
+        }
         formData.append('workspace_id', params.workspace_id);
         formData.append('title', params.title);
         formData.append('description', params.description);
@@ -79,22 +81,6 @@ export class TableService {
             config.onUploadProgress = extra;
         }
         return this.http.post(`/table/import`, formData, config);
-    }
-
-    /**
-     * Import AI table
-     * POST /table/import/ai
-     */
-    importAiTable(params: types.ImportAiTable) {
-        return this.http.post(`/table/import/ai`, params);
-    }
-
-    /**
-     * Apply AI table import
-     * POST /table/import/ai/apply
-     */
-    applyImportAiTable(params: types.ApplyImportAiTable, schema: string) {
-        return this.http.post(`/table/import/ai/apply`, params);
     }
 
     // ============ COLUMN ENDPOINTS ============
