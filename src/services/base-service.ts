@@ -2,7 +2,7 @@ import { HttpClient } from '../client/http-client';
 import * as types from '../types/base';
 
 export class BaseService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     /**
      * Create new base (database)
@@ -11,23 +11,25 @@ export class BaseService {
     async create(params: types.CreateBase) {
         const formData = new FormData();
         formData.append('title', params.title);
-        
+
         if (params.description) {
             formData.append('description', params.description);
         }
-        
+
         if (params.workspace_id) {
             formData.append('workspace_id', params.workspace_id);
         }
-        
+
         if (params.image) {
             formData.append('image', params.image);
         }
-        
+
+        const uploadLimits = this.http.getUploadLimits(false);
         return this.http.post(`/base/create`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
+            ...uploadLimits
         });
     }
 
@@ -45,35 +47,37 @@ export class BaseService {
      */
     update(id: string, params: types.UpdateBase) {
         const formData = new FormData();
-        
+
         if (params.title !== undefined) {
             formData.append('title', params.title);
         }
-        
+
         if (params.description !== undefined) {
             formData.append('description', params.description);
         }
-        
+
         if (params.icon !== undefined) {
             formData.append('icon', params.icon);
         }
-        
+
         if (params.status !== undefined) {
             formData.append('status', params.status);
         }
-        
+
         if (params.visibility !== undefined) {
             formData.append('visibility', params.visibility);
         }
-        
+
         if (params.image) {
             formData.append('image', params.image);
         }
-        
+
+        const uploadLimits = this.http.getUploadLimits(false);
         return this.http.put(`/base/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
+            ...uploadLimits
         });
     }
 
@@ -140,10 +144,12 @@ export class BaseService {
     uploadImage(id: string, imageFile: File) {
         const formData = new FormData();
         formData.append('image', imageFile);
+        // const uploadLimits = this.http.getUploadLimits(false);
         return this.http.post(`/base/${id}/image`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
+            // ...uploadLimits
         });
     }
 
@@ -159,10 +165,10 @@ export class BaseService {
        * Remove user from base
        * POST /base/:id/remove
        */
-      removeUserFromBase(
+    removeUserFromBase(
         baseId: string,
         params: types.RemoveUserFromBase
-      ) {
+    ) {
         return this.http.post(`/base/${baseId}/remove`, params);
-      }
+    }
 }

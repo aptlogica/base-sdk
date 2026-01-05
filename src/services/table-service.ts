@@ -1,8 +1,24 @@
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/table';
+import * as assetTypes from '../types/asset';
+import { ColumnService } from './column-service';
+import { RowService } from './row-service';
+import { ViewService } from './view-service';
+import { AssetService } from './asset-service';
 
 export class TableService {
-    constructor(private http: HttpClient) { }
+    private columnService: ColumnService;
+    private rowService: RowService;
+    private viewService: ViewService;
+    private assetService: AssetService;
+
+    constructor(private http: HttpClient) {
+        // Initialize specialized services
+        this.columnService = new ColumnService(http);
+        this.rowService = new RowService(http);
+        this.viewService = new ViewService(http);
+        this.assetService = new AssetService(http);
+    }
 
     // ============ TABLE ENDPOINTS ============
 
@@ -70,12 +86,13 @@ export class TableService {
         if (params.file) {
             formData.append('file', params.file);
         }
+
+        const uploadLimits = this.http.getUploadLimits(true); // bulk upload
         const config: any = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
+            ...uploadLimits
         };
         if (typeof extra === 'function') {
             config.onUploadProgress = extra;
@@ -84,13 +101,14 @@ export class TableService {
     }
 
     // ============ COLUMN ENDPOINTS ============
+    // Delegated to ColumnService for better code organization
 
     /**
      * Get all columns in table
      * GET /table/:id/columns
      */
     getColumnsByTableId(id: string) {
-        return this.http.get(`/table/${id}/columns`);
+        return this.columnService.getColumnsByTableId(id);
     }
 
     /**
@@ -98,7 +116,7 @@ export class TableService {
      * POST /column/create
      */
     addColumn(params: types.AddColumn) {
-        return this.http.post(`/column/create`, params);
+        return this.columnService.create(params);
     }
 
     /**
@@ -106,7 +124,7 @@ export class TableService {
      * GET /column/:id
      */
     getColumnById(id: string) {
-        return this.http.get(`/column/${id}`);
+        return this.columnService.getById(id);
     }
 
     /**
@@ -114,7 +132,7 @@ export class TableService {
      * GET /column/
      */
     getAllColumns() {
-        return this.http.get(`/column/`);
+        return this.columnService.getAll();
     }
 
     /**
@@ -122,7 +140,7 @@ export class TableService {
      * PATCH /column/:id
      */
     updateColumn(id: string, params: types.UpdateColumn) {
-        return this.http.patch(`/column/${id}`, params);
+        return this.columnService.update(id, params);
     }
 
     /**
@@ -130,7 +148,7 @@ export class TableService {
      * DELETE /column/:id
      */
     deleteColumn(id: string) {
-        return this.http.delete(`/column/${id}`);
+        return this.columnService.delete(id);
     }
 
     /**
@@ -138,19 +156,18 @@ export class TableService {
      * POST /column/reorder
      */
     reorderColumn(params: types.ReorderColumn) {
-        return this.http.post(`/column/reorder`, params);
+        return this.columnService.reorder(params);
     }
 
     // ============ ROW ENDPOINTS ============
+    // Delegated to RowService for better code organization
 
     /**
      * Get all records in table
      * GET /table/:id/records
      */
     getAllRecords(id: string, options?: { page?: number; page_size?: number }) {
-        const page = options?.page ?? 1;
-        const page_size = options?.page_size ?? 30;
-        return this.http.get(`/table/${id}/records?page=${page}&page_size=${page_size}`);
+        return this.rowService.getAllRecords(id, options);
     }
 
     /**
@@ -158,7 +175,7 @@ export class TableService {
      * POST /row/create
      */
     createRow(params: types.CreateRow) {
-        return this.http.post(`/row/create`, params);
+        return this.rowService.create(params);
     }
 
     /**
@@ -166,7 +183,7 @@ export class TableService {
      * POST /row/remove
      */
     deleteRow(params: types.DeleteRow) {
-        return this.http.post(`/row/remove`, params);
+        return this.rowService.delete(params);
     }
 
     /**
@@ -174,7 +191,7 @@ export class TableService {
      * POST /row/bulk-remove
      */
     bulkDeleteRow(params: types.BulkDeleteRow) {
-        return this.http.post(`/row/bulk-remove`, params);
+        return this.rowService.bulkDelete(params);
     }
 
     /**
@@ -182,7 +199,7 @@ export class TableService {
      * POST /row/data/insert
      */
     insertRowData(params: types.InsertRowData) {
-        return this.http.post(`/row/data/insert`, params);
+        return this.rowService.insertData(params);
     }
 
     /**
@@ -190,7 +207,7 @@ export class TableService {
      * POST /row/data/relation
      */
     insertRelationData(params: types.InsertRelationData) {
-        return this.http.post(`/row/data/relation`, params);
+        return this.rowService.insertRelation(params);
     }
 
     /**
@@ -201,26 +218,7 @@ export class TableService {
         params: types.AddAttachments,
         extra?: (progressEvent: ProgressEvent) => void
     ) {
-        const formData = new FormData();
-        formData.append('model_id', params.model_id.toString());
-        formData.append('column_id', params.column_id.toString());
-        formData.append('row_id', params.row_id.toString());
-        if (Array.isArray(params.files)) {
-            params.files.forEach((file) => {
-                formData.append('files', file);
-            });
-        }
-        const config: any = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
-        };
-        if (typeof extra === 'function') {
-            config.onUploadProgress = extra;
-        }
-        return this.http.post(`/row/attachment/add`, formData, config);
+        return this.rowService.addAttachment(params, extra);
     }
 
     /**
@@ -228,17 +226,18 @@ export class TableService {
      * POST /row/attachment/remove
      */
     removeAttachments(params: types.RemoveAttachments) {
-        return this.http.post(`/row/attachment/remove`, params);
+        return this.rowService.removeAttachment(params);
     }
 
     // ============ VIEW ENDPOINTS ============
+    // Delegated to ViewService for better code organization
 
     /**
      * Get all views for table
      * GET /table/:id/views
      */
     getViewsByModelId(id: string) {
-        return this.http.get(`/table/${id}/views`);
+        return this.viewService.getViewsByModelId(id);
     }
 
     /**
@@ -246,7 +245,7 @@ export class TableService {
      * POST /view/create
      */
     createView(params: types.CreateView) {
-        return this.http.post(`/view/create`, params);
+        return this.viewService.create(params);
     }
 
     /**
@@ -254,7 +253,7 @@ export class TableService {
      * GET /view/:id
      */
     getViewById(id: string) {
-        return this.http.get(`/view/${id}`);
+        return this.viewService.getById(id);
     }
 
     /**
@@ -262,7 +261,7 @@ export class TableService {
      * GET /view/
      */
     getAllViews() {
-        return this.http.get(`/view/`);
+        return this.viewService.getAll();
     }
 
     /**
@@ -270,7 +269,7 @@ export class TableService {
      * PATCH /view/:id
      */
     updateView(id: string, params: types.UpdateView) {
-        return this.http.patch(`/view/${id}`, params);
+        return this.viewService.update(id, params);
     }
 
     /**
@@ -278,25 +277,31 @@ export class TableService {
      * DELETE /view/:id
      */
     deleteView(id: string) {
-        return this.http.delete(`/view/${id}`);
+        return this.viewService.delete(id);
     }
 
     // ============ ASSET ENDPOINTS ============
+    // Delegated to AssetService for better code organization
 
     /**
      * Get multiple assets by IDs
      * POST /asset/bulk
+     * @deprecated Use types.GetBulkAssets with 'ids' property, will be migrated to 'asset_ids'
      */
-    getBulkAssets(params: types.GetBulkAssets) {
-        return this.http.post(`/asset/bulk`, params);
+    getBulkAssets(params: types.GetBulkAssets | assetTypes.GetBulkAssets) {
+        // Handle both old and new format
+        const assetParams: assetTypes.GetBulkAssets = 'ids' in params
+            ? { asset_ids: params.ids }
+            : params;
+        return this.assetService.getBulk(assetParams);
     }
 
     /**
      * Update asset metadata
      * PATCH /asset/:id
      */
-    updateAssetById(id: string, params: types.UpdateAsset) {
-        return this.http.patch(`/asset/${id}`, params);
+    updateAssetById(id: string, params: assetTypes.UpdateAsset) {
+        return this.assetService.updateById(id, params);
     }
 
     /**
@@ -304,6 +309,6 @@ export class TableService {
      * DELETE /asset/:id
      */
     deleteAssetById(id: string) {
-        return this.http.delete(`/asset/${id}`);
+        return this.assetService.deleteById(id);
     }
 }

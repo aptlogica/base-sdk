@@ -1,8 +1,16 @@
 import { HttpClient } from "../client/http-client";
 import * as types from "../types/user";
+import { WorkspaceService } from "./workspace-service";
 
 export class UserService {
-  constructor(private http: HttpClient) {}
+  private workspaceService: WorkspaceService | null = null;
+
+  constructor(private http: HttpClient) { }
+
+  // Method to inject WorkspaceService (called from main client)
+  setWorkspaceService(workspaceService: WorkspaceService) {
+    this.workspaceService = workspaceService;
+  }
 
   /**
    * Get user profile by ID
@@ -104,19 +112,19 @@ export class UserService {
     formData.append('email', userData.email);
     formData.append('firstname', userData.firstname);
     formData.append('lastname', userData.lastname);
-    
+
     if (userData.profile_pic) {
       formData.append('profile_pic', userData.profile_pic);
     }
-    
+
     if (userData.is_coowner !== undefined) {
       formData.append('is_coowner', String(userData.is_coowner));
     }
-    
+
     if (userData.membership) {
       formData.append('membership', JSON.stringify(userData.membership));
     }
-    
+
     return this.http.post(`/user/create`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -131,31 +139,33 @@ export class UserService {
   async editUser(userData: types.EditUserRequest) {
     const formData = new FormData();
     formData.append('user_id', userData.user_id);
-    
+
     if (userData.firstname !== undefined) {
       formData.append('firstname', userData.firstname);
     }
-    
+
     if (userData.lastname !== undefined) {
       formData.append('lastname', userData.lastname);
     }
-    
+
     if (userData.profile_pic) {
       formData.append('profile_pic', userData.profile_pic);
     }
-    
+
     if (userData.is_coowner !== undefined) {
       formData.append('is_coowner', String(userData.is_coowner));
     }
-    
+
     if (userData.membership) {
       formData.append('membership', JSON.stringify(userData.membership));
     }
-    
+
+    const uploadLimits = this.http.getUploadLimits(false);
     return this.http.post(`/user/edit`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      ...uploadLimits
     });
   }
 
@@ -203,15 +213,16 @@ export class UserService {
   /**
    * Remove user from workspace
    * POST /workspace/:id/remove
+   * Delegates to WorkspaceService for better code organization
    */
   removeFromWorkspace(
     workspaceId: string,
     params: types.RemoveUserFromWorkspace
   ) {
+    if (this.workspaceService) {
+      return this.workspaceService.removeUserFromWorkspace(workspaceId, params);
+    }
+    // Fallback if WorkspaceService not injected yet
     return this.http.post(`/workspace/${workspaceId}/remove`, params);
   }
-
-
-  
 }
-

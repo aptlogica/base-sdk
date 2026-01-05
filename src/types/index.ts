@@ -17,6 +17,11 @@ export interface ClientConfig {
     maxRetries?: number;
     retryDelay?: number;
   };
+  uploadLimits?: {
+    maxFileSize?: number; // bytes, default 100MB (104857600)
+    maxBulkSize?: number; // bytes, default 500MB (524288000)
+    allowedFileTypes?: string[]; // MIME types, e.g., ['image/jpeg', 'image/png']
+  };
 }
 
 export interface StandardResponse<T = any> {

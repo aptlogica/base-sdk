@@ -25,12 +25,12 @@ export class AssetService {
       formData.append('tags', JSON.stringify(tags));
     }
 
+    const uploadLimits = this.http.getUploadLimits(true); // bulk upload
     const config: any = {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+      ...uploadLimits
     };
     if (typeof extra === 'function') {
       config.onUploadProgress = extra;
@@ -53,12 +53,12 @@ export class AssetService {
       formData.append('optimize', String(optimize));
     }
 
+    const uploadLimits = this.http.getUploadLimits(false); // single file upload
     const config: any = {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+      ...uploadLimits
     };
     if (typeof extra === 'function') {
       config.onUploadProgress = extra;

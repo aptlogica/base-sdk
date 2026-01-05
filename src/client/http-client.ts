@@ -2,6 +2,10 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { EventEmitter } from 'eventemitter3';
 import { ClientConfig, StandardResponse } from '../types';
 
+// Default upload limits (in bytes)
+const DEFAULT_MAX_FILE_SIZE = 104857600; // 100MB
+const DEFAULT_MAX_BULK_SIZE = 524288000; // 500MB
+
 export class HttpClient extends EventEmitter {
   private client: AxiosInstance;
   private config: ClientConfig;
@@ -11,6 +15,18 @@ export class HttpClient extends EventEmitter {
     this.config = config;
     this.client = this.createAxiosInstance();
     this.setupInterceptors();
+  }
+
+  private getUploadConfig(isBulk: boolean = false): { maxContentLength: number; maxBodyLength: number } {
+    const limits = this.config.uploadLimits || {};
+    const maxSize = isBulk
+      ? (limits.maxBulkSize || DEFAULT_MAX_BULK_SIZE)
+      : (limits.maxFileSize || DEFAULT_MAX_FILE_SIZE);
+
+    return {
+      maxContentLength: maxSize,
+      maxBodyLength: maxSize
+    };
   }
 
   private createAxiosInstance(): AxiosInstance {
@@ -33,6 +49,7 @@ export class HttpClient extends EventEmitter {
           if (this.config.auth.type === 'bearer' && this.config.auth.token) {
             config.headers.Authorization = `Bearer ${this.config.auth.token}`;
           } else if (this.config.auth.type === 'basic' && this.config.auth.username && this.config.auth.password) {
+            console.warn('[DEPRECATED] Basic authentication is deprecated and will be removed in a future version. Please use bearer token authentication instead.');
             const credentials = btoa(`${this.config.auth.username}:${this.config.auth.password}`);
             config.headers.Authorization = `Basic ${credentials}`;
           }
@@ -55,12 +72,12 @@ export class HttpClient extends EventEmitter {
       },
       async (error) => {
         this.emit('response-error', error);
-        
+
         // Auto-retry logic
         if (this.config.retries?.enabled && this.shouldRetry(error)) {
           return this.retryRequest(error);
         }
-        
+
         return Promise.reject(this.formatError(error));
       }
     );
@@ -74,17 +91,17 @@ export class HttpClient extends EventEmitter {
   private async retryRequest(error: any): Promise<any> {
     const maxRetries = this.config.retries?.maxRetries || 3;
     const retryDelay = this.config.retries?.retryDelay || 1000;
-    
+
     const retryCount = error.config.__retryCount || 0;
-    
+
     if (retryCount >= maxRetries) {
       return Promise.reject(this.formatError(error));
     }
-    
+
     error.config.__retryCount = retryCount + 1;
-    
+
     await new Promise(resolve => setTimeout(resolve, retryDelay * Math.pow(2, retryCount)));
-    
+
     return this.client.request(error.config);
   }
 
@@ -97,7 +114,7 @@ export class HttpClient extends EventEmitter {
       (customError as any).status = error.response.status;
       return customError;
     }
-    
+
     return error;
   }
 
@@ -151,5 +168,9 @@ export class HttpClient extends EventEmitter {
     this.updateConfig({
       auth: undefined
     });
+  }
+
+  getUploadLimits(isBulk: boolean = false): { maxContentLength: number; maxBodyLength: number } {
+    return this.getUploadConfig(isBulk);
   }
 }

@@ -7,10 +7,13 @@ import { ClientConfig } from './types';
 import { UserService } from './services/user-service';
 import { AssetService } from './services/asset-service';
 import { OrganizationService } from './services/organization-service';
+import { ColumnService } from './services/column-service';
+import { RowService } from './services/row-service';
+import { ViewService } from './services/view-service';
 
 export class SereniBaseClient {
   private http: HttpClient;
-  
+
   public readonly auth: AuthService;
   public readonly workspace: WorkspaceService;
   public readonly baseService: BaseService;
@@ -18,6 +21,11 @@ export class SereniBaseClient {
   public readonly userService: UserService;
   public readonly assetService: AssetService;
   public readonly organization: OrganizationService;
+
+  // New specialized services (can be used directly for better organization)
+  public readonly columnService: ColumnService;
+  public readonly rowService: RowService;
+  public readonly viewService: ViewService;
 
   constructor(config: ClientConfig) {
     this.http = new HttpClient(config);
@@ -30,6 +38,14 @@ export class SereniBaseClient {
     this.userService = new UserService(this.http);
     this.assetService = new AssetService(this.http);
     this.organization = new OrganizationService(this.http);
+
+    // Initialize specialized services
+    this.columnService = new ColumnService(this.http);
+    this.rowService = new RowService(this.http);
+    this.viewService = new ViewService(this.http);
+
+    // Set up service injection for delegation
+    this.userService.setWorkspaceService(this.workspace);
   }
 
   /**
