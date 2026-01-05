@@ -1,5 +1,6 @@
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/asset';
+import { createFormData } from '../utils/form-data';
 
 export class AssetService {
   constructor(private http: HttpClient) { }
@@ -14,7 +15,7 @@ export class AssetService {
     tags?: string[],
     extra?: (progressEvent: ProgressEvent) => void
   ) {
-    const formData = new FormData();
+    const formData = createFormData();
     files.forEach((file) => {
       formData.append('files', file);
     });
@@ -47,7 +48,7 @@ export class AssetService {
     optimize?: boolean,
     extra?: (progressEvent: ProgressEvent) => void
   ) {
-    const formData = new FormData();
+    const formData = createFormData();
     formData.append('file', file);
     if (optimize !== undefined) {
       formData.append('optimize', String(optimize));

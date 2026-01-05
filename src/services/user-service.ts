@@ -1,6 +1,7 @@
 import { HttpClient } from "../client/http-client";
 import * as types from "../types/user";
 import { WorkspaceService } from "./workspace-service";
+import { createFormData } from "../utils/form-data";
 
 export class UserService {
   private workspaceService: WorkspaceService | null = null;
@@ -41,7 +42,7 @@ export class UserService {
    * POST /user/profile/:id/avatar
    */
   addOrUpdateAvatar(id: string, avatarFile: File) {
-    const formData = new FormData();
+    const formData = createFormData();
     formData.append("file", avatarFile);
     return this.http.post(`/user/profile/${id}/avatar`, formData, {
       headers: {
@@ -108,7 +109,7 @@ export class UserService {
    * POST /user/create
    */
   async addUser(userData: types.AddUserRequest) {
-    const formData = new FormData();
+    const formData = createFormData();
     formData.append('email', userData.email);
     formData.append('firstname', userData.firstname);
     formData.append('lastname', userData.lastname);

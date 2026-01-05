@@ -5,6 +5,7 @@ import { ColumnService } from './column-service';
 import { RowService } from './row-service';
 import { ViewService } from './view-service';
 import { AssetService } from './asset-service';
+import { createFormData } from '../utils/form-data';
 
 export class TableService {
     private columnService: ColumnService;
@@ -75,7 +76,7 @@ export class TableService {
         params: types.ImportTable,
         extra?: (progressEvent: ProgressEvent) => void
     ) {
-        const formData = new FormData();
+        const formData = createFormData();
         if (params.base_id) {
             formData.append('base_id', params.base_id);
         }

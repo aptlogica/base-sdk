@@ -1,5 +1,6 @@
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/base';
+import { createFormData } from '../utils/form-data';
 
 export class BaseService {
     constructor(private http: HttpClient) { }
@@ -9,7 +10,7 @@ export class BaseService {
      * POST /base/create
      */
     async create(params: types.CreateBase) {
-        const formData = new FormData();
+        const formData = createFormData();
         formData.append('title', params.title);
 
         if (params.description) {
@@ -46,7 +47,7 @@ export class BaseService {
      * PUT /base/:id
      */
     update(id: string, params: types.UpdateBase) {
-        const formData = new FormData();
+        const formData = createFormData();
 
         if (params.title !== undefined) {
             formData.append('title', params.title);
@@ -142,7 +143,7 @@ export class BaseService {
      * POST /base/:id/image
      */
     uploadImage(id: string, imageFile: File) {
-        const formData = new FormData();
+        const formData = createFormData();
         formData.append('image', imageFile);
         // const uploadLimits = this.http.getUploadLimits(false);
         return this.http.post(`/base/${id}/image`, formData, {

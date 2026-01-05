@@ -111,16 +111,22 @@ export class WorkspaceService {
    * Delegates to bulkAddMembers for better implementation
    */
   inviteUser(workspaceId: string, params: types.InviteMultipleUsers) {
-    // Transform params to bulkAddMembers format
+    const accessRole = params.access_level === 'full_access' ? 'admin' : 'viewer';
+    const baseMemberships = params.bases_ids
+      ? [{ base_id: params.bases_ids, role: 'editor' }]
+      : undefined;
+
     const bulkParams: types.BulkAddMembersRequest = {
       members: params.user_ids.map((user_id: string) => ({
         user_id,
-        memberships: [{
-          workspace_id: params.workspace_id,
-          role: params.access_level === 'full_access' ? 'admin' : 'viewer',
-          bases: params.bases_ids ? [{ base_id: params.bases_ids, role: 'editor' }] : []
-        }]
-      }))
+        memberships: [
+          {
+            workspace_id: workspaceId,
+            role: accessRole,
+            bases: baseMemberships,
+          },
+        ],
+      })),
     };
     return this.bulkAddMembers(workspaceId, bulkParams);
   }

@@ -2,6 +2,16 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { EventEmitter } from 'eventemitter3';
 import { ClientConfig, StandardResponse } from '../types';
 
+function encodeToBase64(value: string): string {
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(value, 'utf8').toString('base64');
+  }
+  if (typeof btoa !== 'undefined') {
+    return btoa(value);
+  }
+  throw new Error('No base64 encoder available in this environment.');
+}
+
 // Default upload limits (in bytes)
 const DEFAULT_MAX_FILE_SIZE = 104857600; // 100MB
 const DEFAULT_MAX_BULK_SIZE = 524288000; // 500MB
@@ -50,7 +60,7 @@ export class HttpClient extends EventEmitter {
             config.headers.Authorization = `Bearer ${this.config.auth.token}`;
           } else if (this.config.auth.type === 'basic' && this.config.auth.username && this.config.auth.password) {
             console.warn('[DEPRECATED] Basic authentication is deprecated and will be removed in a future version. Please use bearer token authentication instead.');
-            const credentials = btoa(`${this.config.auth.username}:${this.config.auth.password}`);
+            const credentials = encodeToBase64(`${this.config.auth.username}:${this.config.auth.password}`);
             config.headers.Authorization = `Basic ${credentials}`;
           }
         }

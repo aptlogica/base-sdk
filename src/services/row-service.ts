@@ -1,5 +1,6 @@
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/table';
+import { createFormData } from '../utils/form-data';
 
 export class RowService {
     constructor(private http: HttpClient) { }
@@ -62,7 +63,7 @@ export class RowService {
         params: types.AddAttachments,
         extra?: (progressEvent: ProgressEvent) => void
     ) {
-        const formData = new FormData();
+        const formData = createFormData();
         formData.append('model_id', params.model_id.toString());
         formData.append('column_id', params.column_id.toString());
         formData.append('row_id', params.row_id.toString());
