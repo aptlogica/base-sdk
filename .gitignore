@@ -4,3 +4,8 @@ result.json
 explore.json
 src/__tests__
 dist
+tests
+**/tests
+**/*.unit.test.ts
+report.md
+coverage
