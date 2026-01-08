@@ -3,7 +3,7 @@ import * as types from '../types/base';
 import { createFormData } from '../utils/form-data';
 
 export class BaseService {
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     /**
      * Create new base (database)
@@ -145,8 +145,7 @@ export class BaseService {
     uploadImage(id: string, imageFile: File) {
         const formData = createFormData();
         formData.append('image', imageFile);
-        // const uploadLimits = this.http.getUploadLimits(false);
-        return this.http.post(`/base/${id}/image`, formData, {
+              return this.http.post(`/base/${id}/image`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

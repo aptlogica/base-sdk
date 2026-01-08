@@ -8,12 +8,12 @@ import { AssetService } from './asset-service';
 import { createFormData } from '../utils/form-data';
 
 export class TableService {
-    private columnService: ColumnService;
-    private rowService: RowService;
-    private viewService: ViewService;
-    private assetService: AssetService;
+    private readonly columnService: ColumnService;
+    private readonly rowService: RowService;
+    private readonly viewService: ViewService;
+    private readonly assetService: AssetService;
 
-    constructor(private http: HttpClient) {
+    constructor(private readonly http: HttpClient) {
         // Initialize specialized services
         this.columnService = new ColumnService(http);
         this.rowService = new RowService(http);

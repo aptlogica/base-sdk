@@ -2,7 +2,7 @@ import { HttpClient } from "../client/http-client";
 import * as types from "../types/workspace";
 
 export class WorkspaceService {
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Create new workspace

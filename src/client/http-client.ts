@@ -1,13 +1,13 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { EventEmitter } from 'eventemitter3';
 import { ClientConfig, StandardResponse } from '../types';
 
-function encodeToBase64(value: string): string {
-  if (typeof Buffer !== 'undefined') {
-    return Buffer.from(value, 'utf8').toString('base64');
+export function encodeToBase64(value: string): string {
+  if (typeof (globalThis as any).Buffer !== 'undefined') {
+    return (globalThis as any).Buffer.from(value, 'utf8').toString('base64');
   }
-  if (typeof btoa !== 'undefined') {
-    return btoa(value);
+  if (typeof (globalThis as any).btoa !== 'undefined') {
+    return (globalThis as any).btoa(value);
   }
   throw new Error('No base64 encoder available in this environment.');
 }
@@ -88,7 +88,7 @@ export class HttpClient extends EventEmitter {
           return this.retryRequest(error);
         }
 
-        return Promise.reject(this.formatError(error));
+        throw this.formatError(error);
       }
     );
   }
@@ -105,7 +105,7 @@ export class HttpClient extends EventEmitter {
     const retryCount = error.config.__retryCount || 0;
 
     if (retryCount >= maxRetries) {
-      return Promise.reject(this.formatError(error));
+      throw this.formatError(error);
     }
 
     error.config.__retryCount = retryCount + 1;
@@ -168,7 +168,7 @@ export class HttpClient extends EventEmitter {
   setHeaders(headers: Record<string, string>): void {
     this.updateConfig({
       headers: {
-        ...(this.config.headers || {}),
+        ...this.config.headers,
         ...headers
       }
     });

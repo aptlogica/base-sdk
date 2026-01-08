@@ -3,7 +3,7 @@ import * as types from '../types/asset';
 import { createFormData } from '../utils/form-data';
 
 export class AssetService {
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Upload assets/files

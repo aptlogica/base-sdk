@@ -3,7 +3,7 @@ import * as types from '../types/table';
 import { createFormData } from '../utils/form-data';
 
 export class RowService {
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     /**
      * Get all records in table

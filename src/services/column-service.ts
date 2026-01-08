@@ -2,7 +2,7 @@ import { HttpClient } from '../client/http-client';
 import * as types from '../types/table';
 
 export class ColumnService {
-    constructor(private http: HttpClient) { }
+    constructor(private readonly http: HttpClient) { }
 
     /**
      * Get all columns in table

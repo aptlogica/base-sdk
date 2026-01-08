@@ -12,7 +12,7 @@ import { RowService } from './services/row-service';
 import { ViewService } from './services/view-service';
 
 export class SereniBaseClient {
-  private http: HttpClient;
+  private readonly http: HttpClient;
 
   public readonly auth: AuthService;
   public readonly workspace: WorkspaceService;

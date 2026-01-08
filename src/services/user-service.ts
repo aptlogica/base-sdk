@@ -6,7 +6,7 @@ import { createFormData } from "../utils/form-data";
 export class UserService {
   private workspaceService: WorkspaceService | null = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   // Method to inject WorkspaceService (called from main client)
   setWorkspaceService(workspaceService: WorkspaceService) {

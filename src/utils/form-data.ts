@@ -7,17 +7,17 @@ function resolveFormDataConstructor(): typeof FormData {
     return cachedConstructor;
   }
 
-  if (typeof globalThis.FormData !== 'undefined') {
+  if ('FormData' in globalThis) {
     cachedConstructor = globalThis.FormData;
     return cachedConstructor;
   }
 
   cachedConstructor = NodeFormData as unknown as typeof FormData;
 
-  if (typeof (globalThis as any).FormData === 'undefined') {
+  if (!('FormData' in globalThis)) {
     (globalThis as any).FormData = cachedConstructor;
   }
-  if (typeof (globalThis as any).File === 'undefined') {
+  if (!('File' in globalThis)) {
     (globalThis as any).File = NodeFile;
   }
 
