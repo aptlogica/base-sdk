@@ -25,7 +25,7 @@ export class UserService {
    * Update user profile
    * PATCH /user/profile/:id
    */
-  updateProfile(id: string, params: types.UpdateUserProfileParams) {
+  updateProfile(id: string, params: types.UpdateUserProfileParams, avatarFile?: File) {
     const formData = createFormData();
 
     if (params.first_name !== undefined) {
@@ -54,6 +54,10 @@ export class UserService {
 
     if (params.locale !== undefined) {
       formData.append('locale', params.locale);
+    }
+
+    if (avatarFile) {
+      formData.append('avatar', avatarFile); // db: "avatar"
     }
 
     return this.http.patch(`/user/profile/${id}`, formData, {
