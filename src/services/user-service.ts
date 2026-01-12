@@ -26,7 +26,41 @@ export class UserService {
    * PATCH /user/profile/:id
    */
   updateProfile(id: string, params: types.UpdateUserProfileParams) {
-    return this.http.patch(`/user/profile/${id}`, params);
+    const formData = createFormData();
+
+    if (params.first_name !== undefined) {
+      formData.append('first_name', params.first_name);
+    }
+
+    if (params.last_name !== undefined) {
+      formData.append('last_name', params.last_name);
+    }
+
+    if (params.display_name !== undefined) {
+      formData.append('display_name', params.display_name);
+    }
+
+    if (params.dob !== undefined) {
+      formData.append('dob', params.dob);
+    }
+
+    if (params.country !== undefined) {
+      formData.append('country', params.country);
+    }
+
+    if (params.timezone !== undefined) {
+      formData.append('timezone', params.timezone);
+    }
+
+    if (params.locale !== undefined) {
+      formData.append('locale', params.locale);
+    }
+
+    return this.http.patch(`/user/profile/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   }
 
   /**
