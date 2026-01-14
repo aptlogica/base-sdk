@@ -2,7 +2,7 @@ import { HttpClient } from "../client/http-client";
 import * as types from "../types/organization";
 
 export class OrganizationService {
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Get all organizations (user is member of)

@@ -2,7 +2,7 @@ import { HttpClient } from '../client/http-client';
 import * as types from '../types/auth';
 
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Login with email and password

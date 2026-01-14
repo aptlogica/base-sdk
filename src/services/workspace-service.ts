@@ -2,7 +2,7 @@ import { HttpClient } from "../client/http-client";
 import * as types from "../types/workspace";
 
 export class WorkspaceService {
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Create new workspace
@@ -107,13 +107,27 @@ export class WorkspaceService {
   }
 
   /**
-   * Invite multiple users to the workspace (deprecated - use bulkAddMembers)
-   * @deprecated Use bulkAddMembers instead
+   * Invite multiple users to the workspace
+   * Delegates to bulkAddMembers for better implementation
    */
   inviteUser(workspaceId: string, params: types.InviteMultipleUsers) {
-    return this.http.post<types.InviteMultipleUsersResponse>(
-      `/workspace/${workspaceId}/invite`,
-      params
-    );
+    const accessRole = params.access_level === 'full_access' ? 'admin' : 'viewer';
+    const baseMemberships = params.bases_ids
+      ? [{ base_id: params.bases_ids, role: 'editor' }]
+      : undefined;
+
+    const bulkParams: types.BulkAddMembersRequest = {
+      members: params.user_ids.map((user_id: string) => ({
+        user_id,
+        memberships: [
+          {
+            workspace_id: workspaceId,
+            role: accessRole,
+            bases: baseMemberships,
+          },
+        ],
+      })),
+    };
+    return this.bulkAddMembers(workspaceId, bulkParams);
   }
 }

@@ -1,8 +1,9 @@
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/asset';
+import { createFormData } from '../utils/form-data';
 
 export class AssetService {
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Upload assets/files
@@ -14,7 +15,7 @@ export class AssetService {
     tags?: string[],
     extra?: (progressEvent: ProgressEvent) => void
   ) {
-    const formData = new FormData();
+    const formData = createFormData();
     files.forEach((file) => {
       formData.append('files', file);
     });
@@ -25,12 +26,12 @@ export class AssetService {
       formData.append('tags', JSON.stringify(tags));
     }
 
+    const uploadLimits = this.http.getUploadLimits(true); // bulk upload
     const config: any = {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+      ...uploadLimits
     };
     if (typeof extra === 'function') {
       config.onUploadProgress = extra;
@@ -47,18 +48,18 @@ export class AssetService {
     optimize?: boolean,
     extra?: (progressEvent: ProgressEvent) => void
   ) {
-    const formData = new FormData();
+    const formData = createFormData();
     formData.append('file', file);
     if (optimize !== undefined) {
       formData.append('optimize', String(optimize));
     }
 
+    const uploadLimits = this.http.getUploadLimits(false); // single file upload
     const config: any = {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+      ...uploadLimits
     };
     if (typeof extra === 'function') {
       config.onUploadProgress = extra;

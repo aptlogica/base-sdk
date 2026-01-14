@@ -83,6 +83,11 @@ export interface DeleteRow {
   row_id: number;
 }
 
+export interface BulkDeleteRow {
+  model_id: string;
+  row_ids: number[];
+}
+
 // -------- Views --------
 export interface CreateView {
   model_id: string;
