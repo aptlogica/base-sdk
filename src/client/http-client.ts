@@ -3,10 +3,10 @@ import { EventEmitter } from 'eventemitter3';
 import { ClientConfig, StandardResponse } from '../types';
 
 export function encodeToBase64(value: string): string {
-  if (typeof (globalThis as any).Buffer !== 'undefined') {
+  if ((globalThis as any).Buffer !== undefined) {
     return (globalThis as any).Buffer.from(value, 'utf8').toString('base64');
   }
-  if (typeof (globalThis as any).btoa !== 'undefined') {
+  if ((globalThis as any).btoa !== undefined) {
     return (globalThis as any).btoa(value);
   }
   throw new Error('No base64 encoder available in this environment.');
