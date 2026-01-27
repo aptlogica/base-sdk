@@ -35,7 +35,11 @@ describe('UserService', () => {
   it('should call http.patch on updateProfile', () => {
     const params = { foo: 1 };
     service.updateProfile('uid', params as any);
-    expect(mockHttpClient.patch).toHaveBeenCalledWith('/user/profile/uid', params);
+    expect(mockHttpClient.patch).toHaveBeenCalledWith(
+      '/user/profile/uid',
+      expect.objectContaining({ append: expect.any(Function) }),
+      { headers: { 'Content-Type': 'multipart/form-data' } }
+    );
   });
 
   it('should call http.post on changePassword', () => {

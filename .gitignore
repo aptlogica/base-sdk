@@ -5,4 +5,6 @@ explore.json
 
 dist
 
-coverage
+# Ignore coverage output except lcov.info
+coverage/
+!coverage/lcov.info
