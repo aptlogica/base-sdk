@@ -90,6 +90,31 @@ export class AssetService {
   deleteById(id: string) {
     return this.http.delete(`/asset/${id}`);
   }
+
+   // Add image
+  addImage(
+    params: types.AddImage,
+    extra?: (progressEvent: ProgressEvent) => void
+  ) {
+    const formData = new FormData();
+    if (Array.isArray(params.files)) {
+      params.files.forEach((file) => {
+        formData.append('files', file);
+      });
+    }
+    const config: any = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    };
+    if (typeof extra === 'function') {
+      config.onUploadProgress = extra;
+    }
+    return this.http.post(`/asset/upload-image`, formData, config);
+  }
+
 }
 
 
