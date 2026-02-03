@@ -33,9 +33,15 @@ describe('UserService', () => {
   });
 
   it('should call http.patch on updateProfile', () => {
-    const params = { foo: 1 };
+    const formData = { append: jest.fn() };
+    (createFormData as jest.Mock).mockReturnValue(formData);
+    const params = { first_name: 'John' };
     service.updateProfile('uid', params as any);
-    expect(mockHttpClient.patch).toHaveBeenCalledWith('/user/profile/uid', params);
+    expect(mockHttpClient.patch).toHaveBeenCalledWith('/user/profile/uid', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   });
 
   it('should call http.post on changePassword', () => {
