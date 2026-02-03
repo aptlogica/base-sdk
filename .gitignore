@@ -6,3 +6,4 @@ explore.json
 dist
 
 coverage
+!coverage/lcov-info
