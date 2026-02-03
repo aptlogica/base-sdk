@@ -5,5 +5,5 @@ explore.json
 
 dist
 
-coverage
+coverage/
 !coverage/lcov-info
