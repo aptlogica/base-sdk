@@ -46,7 +46,7 @@ export class BaseService {
      * Update base
      * PUT /base/:id
      */
-    update(id: string, params: types.UpdateBase) {
+    async update(id: string, params: types.UpdateBase) {
         const formData = createFormData();
 
         if (params.title !== undefined) {
@@ -69,17 +69,22 @@ export class BaseService {
             formData.append('visibility', params.visibility);
         }
 
-        if (params.image) {
-            formData.append('image', params.image);
-        }
-
         const uploadLimits = this.http.getUploadLimits(false);
-        return this.http.put(`/base/${id}`, formData, {
+        const result = await this.http.put(`/base/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
             ...uploadLimits
         });
+
+        // Handle image: add if provided, else remove if requested
+        if (params.image) {
+            await this.uploadImage(id, params.image);
+        } else if (params.removeImage) {
+            await this.deleteImage(id);
+        }
+
+        return result;
     }
 
     /**
@@ -142,7 +147,7 @@ export class BaseService {
      * Upload or update base image
      * POST /base/:id/image
      */
-    uploadImage(id: string, imageFile: File) {
+    uploadImage(id: string, imageFile: File | Blob) {
         const formData = createFormData();
         formData.append('image', imageFile);
               return this.http.post(`/base/${id}/image`, formData, {

@@ -15,6 +15,7 @@ export interface UpdateBase {
   status?: string;
   visibility?: string;
   image?: File | Blob;
+  removeImage?: boolean;
 }
 
 export interface BulkAddMembersRequest {

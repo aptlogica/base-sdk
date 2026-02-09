@@ -58,34 +58,42 @@ describe('BaseService', () => {
   });
 
   describe('update', () => {
-    it('should append all fields and call http.put', () => {
-      const params = { title: 't', description: 'd', icon: 'i', status: 's', visibility: 'v', image: 'img' };
+    it('should append all fields except image and call http.put, then uploadImage if image provided', async () => {
+      const params = { title: 't', description: 'd', icon: 'i', status: 's', visibility: 'v', image: 'img' as any };
       const formData = { append: jest.fn() };
-      (createFormData as jest.Mock).mockReturnValue(formData);
-      service.update('id', params as any);
+      const imageFormData = { append: jest.fn() };
+      (createFormData as jest.Mock).mockReturnValueOnce(formData).mockReturnValueOnce(imageFormData);
+      await service.update('id', params);
       expect(formData.append).toHaveBeenCalledWith('title', 't');
       expect(formData.append).toHaveBeenCalledWith('description', 'd');
       expect(formData.append).toHaveBeenCalledWith('icon', 'i');
       expect(formData.append).toHaveBeenCalledWith('status', 's');
       expect(formData.append).toHaveBeenCalledWith('visibility', 'v');
-      expect(formData.append).toHaveBeenCalledWith('image', 'img');
+      expect(formData.append).toHaveBeenCalledTimes(5);
       expect(mockHttpClient.put).toHaveBeenCalledWith(
         '/base/id',
         formData,
         expect.objectContaining({ headers: expect.any(Object) })
       );
+      expect(mockHttpClient.post).toHaveBeenCalledWith(
+        '/base/id/image',
+        imageFormData,
+        expect.objectContaining({ headers: expect.any(Object) })
+      );
     });
-    it('should append only provided fields', () => {
-      const params = { title: 't' };
+    it('should append only provided fields and call deleteImage if removeImage true', async () => {
+      const params = { title: 't', removeImage: true };
       const formData = { append: jest.fn() };
       (createFormData as jest.Mock).mockReturnValue(formData);
-      service.update('id', params as any);
+      await service.update('id', params);
       expect(formData.append).toHaveBeenCalledWith('title', 't');
-      expect(formData.append).not.toHaveBeenCalledWith('description', expect.anything());
-      expect(formData.append).not.toHaveBeenCalledWith('icon', expect.anything());
-      expect(formData.append).not.toHaveBeenCalledWith('status', expect.anything());
-      expect(formData.append).not.toHaveBeenCalledWith('visibility', expect.anything());
-      expect(formData.append).not.toHaveBeenCalledWith('image', expect.anything());
+      expect(formData.append).toHaveBeenCalledTimes(1);
+      expect(mockHttpClient.put).toHaveBeenCalledWith(
+        '/base/id',
+        formData,
+        expect.objectContaining({ headers: expect.any(Object) })
+      );
+      expect(mockHttpClient.delete).toHaveBeenCalledWith('/base/id/image');
     });
   });
 
