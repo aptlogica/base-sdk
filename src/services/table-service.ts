@@ -223,6 +223,14 @@ export class TableService {
     }
 
     /**
+     * Update attachment for row
+     * POST /row/attachment/update
+     */
+    updateAttachment(params: types.UpdateAttachments) {
+        return this.rowService.updateAttachment(params);
+    }
+
+    /**
      * Remove attachment from row
      * POST /row/attachment/remove
      */
