@@ -71,6 +71,14 @@ export interface AddAttachments {
   files: File[];
 }
 
+export interface UpdateAttachments {
+  model_id: string;
+  column_id: string;
+  row_id: number;
+  asset_id: string;
+  content: UpdateAsset;
+}
+
 export interface RemoveAttachments {
   model_id: string;
   column_id: string;

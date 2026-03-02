@@ -86,6 +86,14 @@ export class RowService {
         return this.http.post(`/row/attachment/add`, formData, config);
     }
 
+     /**
+     * Update attachment for row
+     * POST /row/attachment/update
+     */
+    updateAttachment(params: types.UpdateAttachments) {
+        return this.http.post(`/row/attachment/update`, params);
+    }
+
     /**
      * Remove attachment from row
      * POST /row/attachment/remove
