@@ -76,7 +76,7 @@ export class BaseService {
 
         // Add remove_image flag if requested
         if (params.removeImage !== undefined) {
-            formData.append('remove_image', params.removeImage ? '1' : '0');
+            formData.append('remove_image', params.removeImage ? 'true' : 'false');
         }
 
         const uploadLimits = this.http.getUploadLimits(false);
