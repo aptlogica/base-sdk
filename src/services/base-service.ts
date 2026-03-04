@@ -69,6 +69,16 @@ export class BaseService {
             formData.append('visibility', params.visibility);
         }
 
+        // Add image file if provided
+        if (params.image) {
+            formData.append('image', params.image);
+        }
+
+        // Add remove_image flag if requested
+        if (params.removeImage !== undefined) {
+            formData.append('remove_image', params.removeImage ? '1' : '0');
+        }
+
         const uploadLimits = this.http.getUploadLimits(false);
         const result = await this.http.put(`/base/${id}`, formData, {
             headers: {
@@ -76,13 +86,6 @@ export class BaseService {
             },
             ...uploadLimits
         });
-
-        // Handle image: add if provided, else remove if requested
-        if (params.image) {
-            await this.uploadImage(id, params.image);
-        } else if (params.removeImage) {
-            await this.deleteImage(id);
-        }
 
         return result;
     }
