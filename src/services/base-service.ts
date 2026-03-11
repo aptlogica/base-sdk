@@ -1,3 +1,9 @@
+// Copyright (c) 2026 Aptlogica Technologies Private Limited
+// SPDX-License-Identifier: MIT
+// Websites: https://www.aptlogica.com | https://www.serenibase.com
+// Support: support@aptlogica.com | support@serenibase.com
+
+
 import { HttpClient } from '../client/http-client';
 import * as types from '../types/base';
 import { createFormData } from '../utils/form-data';
