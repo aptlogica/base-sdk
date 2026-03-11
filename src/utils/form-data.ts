@@ -1,5 +1,9 @@
-import { FormData as NodeFormData, File as NodeFile } from 'formdata-node';
+// Copyright (c) 2026 Aptlogica Technologies Private Limited
+// SPDX-License-Identifier: MIT
+// Websites: https://www.aptlogica.com | https://www.serenibase.com
+// Support: support@aptlogica.com | support@serenibase.com
 
+import { FormData as NodeFormData, File as NodeFile } from 'formdata-node';
 let cachedConstructor: typeof FormData | null = null;
 
 function resolveFormDataConstructor(): typeof FormData {

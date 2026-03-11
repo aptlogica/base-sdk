@@ -1,3 +1,8 @@
+// Copyright (c) 2026 Aptlogica Technologies Private Limited
+// SPDX-License-Identifier: MIT
+// Websites: https://www.aptlogica.com | https://www.serenibase.com
+// Support: support@aptlogica.com | support@serenibase.com
+
 export interface AddUserRequest {
   email: string; // required, must be a valid email
   firstname: string; // required

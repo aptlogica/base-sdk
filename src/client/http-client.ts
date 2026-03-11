@@ -1,3 +1,8 @@
+// Copyright (c) 2026 Aptlogica Technologies Private Limited
+// SPDX-License-Identifier: MIT
+// Websites: https://www.aptlogica.com | https://www.serenibase.com
+// Support: support@aptlogica.com | support@serenibase.com
+
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { EventEmitter } from 'eventemitter3';
 import { ClientConfig, StandardResponse } from '../types';

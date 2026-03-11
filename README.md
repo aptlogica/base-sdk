@@ -1438,7 +1438,7 @@ client.on('error', (err) => console.error('Error:', err));
 
 ```bash
 # Fork and clone
-git clone https://github.com/yourusername/base-sdk.git
+git clone https://github.com/aptlogica/base-sdk.git
 cd base-sdk
 
 # Create feature branch
@@ -1473,11 +1473,3 @@ This project is licensed under the **MIT License**.
 See [LICENSE](LICENSE) file for full license text.
 
 ---
-
-**Made with ❤️ for the SereniBase Ecosystem**
-
-**Links:**
-- [SereniBase Backend](https://github.com/yourusername/sereni-base)
-- [SereniBase Frontend](https://github.com/yourusername/base-ui)
-- [API Documentation](API_DOCUMENTATION.txt)
-- [Report Issues](https://github.com/yourusername/base-sdk/issues)
