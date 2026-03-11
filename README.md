@@ -1438,7 +1438,7 @@ client.on('error', (err) => console.error('Error:', err));
 
 ```bash
 # Fork and clone
-git clone https://github.com/yourusername/base-sdk.git
+git clone https://github.com/aptlogica/base-sdk.git
 cd base-sdk
 
 # Create feature branch
