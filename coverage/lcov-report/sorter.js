@@ -28,11 +28,11 @@ var addSorting = (function() {
         const searchValue = document.getElementById('fileSearch').value;
         const rows = document.getElementsByTagName('tbody')[0].children;
 
-        // Try to create a RegExp from the searchValue. If it fails (invalid regex),
-        // it will be treated as a plain text search
+        // Use plain text search for safety - escape special regex characters
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         let searchRegex;
         try {
-            searchRegex = new RegExp(searchValue, 'i'); // 'i' for case-insensitive
+            searchRegex = new RegExp(escapedSearchValue, 'i'); // 'i' for case-insensitive
         } catch (error) {
             searchRegex = null;
         }
