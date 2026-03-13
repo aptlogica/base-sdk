@@ -1,6 +1,6 @@
 # serenibase-sdk - TypeScript SDK for SereniBase UI
 
-> Official TypeScript SDK for SereniBase Backend integration. **Exclusively designed for SereniBase UI (base-ui)** - provides type-safe API communication, authentication management, and comprehensive service layer for workspace, base, table, and data operations.
+> Enterprise-grade TypeScript SDK and open source backend SDK for SereniBase platform integration. A comprehensive developer toolkit and API integration SDK providing type-safe API communication, authentication management, and complete service layer for workspace, database, and data operations.
 
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
@@ -9,15 +9,16 @@
 
 ## Overview
 
-**serenibase-sdk** is the official TypeScript SDK for communicating with the SereniBase Backend API. It provides a comprehensive, type-safe interface for all backend operations including authentication, workspace management, database operations, and data manipulation.
+**serenibase-sdk** is the official TypeScript SDK and developer SDK providing a comprehensive, enterprise-grade interface for SereniBase Backend API integration. This professionally maintained API SDK and backend integration SDK offers type-safe API communication via TypeScript API client, robust authentication management, and complete backend operation capabilities. A complete Node.js SDK and developer tools SDK for backend services.
 
-## Features
+## Key Features
 
-- **Type-safe API client for SereniBase**
-- **Authentication and session management**
-- **Workspace, base, table, and data operations**
-- **Error handling and event system**
-- **Designed for use with SereniBase UI**
+- **Type-Safe API Client**: Full TypeScript support with comprehensive type definitions
+- **Authentication Management**: Secure session handling with automatic token refresh
+- **Database Operations**: Complete CRUD operations for workspaces, bases, tables, and records
+- **Error Handling**: Comprehensive error management with detailed error types
+- **Event System**: Real-time event handling for collaborative features
+- **Optimized for Production**: Built specifically for SereniBase UI integration
 
 ## Architecture
 
@@ -35,22 +36,88 @@ npm install serenibase-sdk
 
 See `.env.example` for environment variables and configuration options.
 
-## Usage
+## Quick Start
 
-```ts
+```typescript
 import { SereniBaseClient } from 'serenibase-sdk';
-const client = new SereniBaseClient({ apiUrl: 'https://api.serenibase.com' });
-// ...
+
+// Initialize client
+const client = new SereniBaseClient({
+  apiUrl: 'https://api.serenibase.com',
+  apiKey: 'your-api-key'
+});
+
+// Authenticate user
+const authResult = await client.auth.login({
+  email: 'user@example.com',
+  password: 'secure-password'
+});
+
+// Create a new workspace
+const workspace = await client.workspaces.create({
+  name: 'My Project',
+  description: 'Project workspace'
+});
+
+// Create a base within the workspace
+const base = await client.bases.create(workspace.id, {
+  name: 'Customer Database',
+  description: 'Customer management system'
+});
+
+// Add a table to the base
+const table = await client.tables.create(base.id, {
+  name: 'customers',
+  fields: [
+    { name: 'name', type: 'text', required: true },
+    { name: 'email', type: 'email', required: true },
+    { name: 'created_at', type: 'datetime', defaultValue: 'now()' }
+  ]
+});
+
+console.log('Setup complete:', { workspace, base, table });
 ```
 
 ## Development
 
-- **Clone the repo and run `npm install`**
-- **Use `npm run dev` for local development**
+### Local Setup
+```bash
+# Clone the repository
+git clone https://github.com/aptlogica/base-sdk.git
+cd base-sdk
 
-## Testing
+# Install dependencies
+npm install
 
-- **Run `npm test` to execute unit tests**
+# Set up environment
+cp .env.example .env
+# Configure API endpoints and keys
+
+# Run in development mode
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### Environment Configuration
+```bash
+VITE_API_URL=http://localhost:8080
+VITE_WS_URL=ws://localhost:8080/ws
+VITE_API_VERSION=v1
+```
+
+### Testing
+```bash
+# Run unit tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run integration tests
+npm run test:integration
+```
 
 ## Security
 
