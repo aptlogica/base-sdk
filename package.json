@@ -1,7 +1,7 @@
 {
-  "name": "gopostgrest-sdk",
+  "name": "serenibase-sdk",
   "version": "1.0.0",
-  "description": "TypeScript SDK for PostgREST Clone Framework",
+  "description": "Official TypeScript SDK for SereniBase Backend integration. Provides type-safe API communication, authentication management, and comprehensive service layer for workspace, base, table, and data operations.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -19,14 +19,22 @@
     "docs": "typedoc src/index.ts"
   },
   "keywords": [
-    "postgrest",
-    "postgresql",
-    "rest-api",
-    "typescript",
+    "serenibase",
     "sdk",
-    "database"
+    "typescript",
+    "database",
+    "rest-api",
+    "api-client"
   ],
-  "author": "Your Organization",
+  "author": "Aptlogica Technologies",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aptlogica/serenibase-sdk.git"
+  },
+  "homepage": "https://github.com/aptlogica/serenibase-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/aptlogica/serenibase-sdk/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^1.12.2",
