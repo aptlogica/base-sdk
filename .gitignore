@@ -20,7 +20,7 @@ build/
 out/
 *.exe
 *.test
-*.tgz
+# *.tgz
 # Node
 node_modules/
 # Go
