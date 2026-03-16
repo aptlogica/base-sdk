@@ -1,7 +1,7 @@
 {
   "name": "serenibase-sdk",
   "version": "1.0.0",
-  "description": "Official TypeScript SDK for SereniBase Backend integration. Provides type-safe API communication, authentication management, and comprehensive service layer for workspace, base, table, and data operations.",
+  "description": "Official JavaScript SDK for SereniBase APIs",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -31,11 +31,11 @@
   "author": "Aptlogica Technologies",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aptlogica/serenibase-sdk.git"
+    "url": "https://github.com/aptlogica/base-sdk.git"
   },
-  "homepage": "https://github.com/aptlogica/serenibase-sdk#readme",
+  "homepage": "https://github.com/aptlogica/base-sdk#readme",
   "bugs": {
-    "url": "https://github.com/aptlogica/serenibase-sdk/issues"
+    "url": "https://github.com/aptlogica/base-sdk/issues"
   },
   "license": "MIT",
   "dependencies": {

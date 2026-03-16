@@ -11,9 +11,8 @@ Thumbs.db
 # Logs
 *.log
 # Coverage
-coverage.out
 coverage/
-*.lcov
+!coverage/lcov.info
 # Build
 bin/
 dist/
