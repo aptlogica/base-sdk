@@ -9,7 +9,7 @@
 
 ## Overview
 
-**serenibase-sdk** is the official TypeScript SDK and developer SDK providing a comprehensive, enterprise-grade interface for SereniBase Backend API integration. This professionally maintained API SDK and backend integration SDK offers type-safe API communication via TypeScript API client, robust authentication management, and complete backend operation capabilities. A complete Node.js SDK and developer tools SDK for backend services.
+**serenibase-sdk** is the official TypeScript SDK and developer SDK providing a comprehensive, enterprise-grade interface for SereniBase Backend API integration. This professionally maintained API SDK and backend integration SDK offers type-safe API communication via TypeScript API client, robust authentication management, and complete backend operation capabilities as an open source sdk, a typescript backend toolkit, a nodejs sdk, a developer api toolkit, and a typescript developer toolkit. A complete Node.js SDK and developer tools SDK for backend services.
 
 ## Key Features
 

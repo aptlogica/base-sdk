@@ -11,9 +11,8 @@ Thumbs.db
 # Logs
 *.log
 # Coverage
-coverage.out
 coverage/
-*.lcov
+!coverage/lcov.info
 # Build
 bin/
 dist/
@@ -21,7 +20,7 @@ build/
 out/
 *.exe
 *.test
-*.tgz
+# *.tgz
 # Node
 node_modules/
 # Go
