@@ -10,9 +10,9 @@ Thumbs.db
 .env.*.local
 # Logs
 *.log
+
 # Coverage
-coverage/
-!coverage/lcov.info
+coverage/lcov-report/
 # Build
 bin/
 dist/
