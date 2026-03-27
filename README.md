@@ -5,7 +5,6 @@
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Quality Gate Status](https://sonar.aptlogica.com/api/project_badges/quality_gate?project=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1&token=sqb_5d01b701b8091514f115d0f522a40ee687fd6809)](https://sonar.aptlogica.com/dashboard?id=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1)
 
 ## Overview
 
@@ -43,8 +42,11 @@ import { SereniBaseClient } from 'serenibase-sdk';
 
 // Initialize client
 const client = new SereniBaseClient({
-  apiUrl: 'https://api.serenibase.com',
-  apiKey: 'your-api-key'
+  baseURL: 'https://api.serenibase.com',
+  auth: {
+    type: 'bearer',
+    token: 'your-api-token'
+  }
 });
 
 // Authenticate user
@@ -54,19 +56,20 @@ const authResult = await client.auth.login({
 });
 
 // Create a new workspace
-const workspace = await client.workspaces.create({
+const workspace = await client.workspace.create({
   name: 'My Project',
   description: 'Project workspace'
 });
 
 // Create a base within the workspace
-const base = await client.bases.create(workspace.id, {
-  name: 'Customer Database',
-  description: 'Customer management system'
+const base = await client.baseService.create({
+  title: 'Customer Database',
+  description: 'Customer management system',
+  workspace_id: workspace.id
 });
 
 // Add a table to the base
-const table = await client.tables.create(base.id, {
+const table = await client.tableService.create(base.id, {
   name: 'customers',
   fields: [
     { name: 'name', type: 'text', required: true },
@@ -102,9 +105,9 @@ npm run build
 
 ### Environment Configuration
 ```bash
-VITE_API_URL=http://localhost:8080
-VITE_WS_URL=ws://localhost:8080/ws
-VITE_API_VERSION=v1
+SERENIBASE_BASE_URL=http://localhost:8080
+SERENIBASE_API_TOKEN=replace-me
+SERENIBASE_TIMEOUT_MS=30000
 ```
 
 ### Testing
