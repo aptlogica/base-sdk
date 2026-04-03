@@ -24,7 +24,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ## Overview
 
-**serenibase-sdk** is the official TypeScript SDK and developer SDK providing a comprehensive, enterprise-grade interface for SereniBase Backend API integration. This professionally maintained API SDK and backend integration SDK offers type-safe API communication via TypeScript API client, robust authentication management, and complete backend operation capabilities as an open source sdk, a typescript backend toolkit, a nodejs sdk, a developer api toolkit, and a typescript developer toolkit. A complete Node.js SDK and developer tools SDK for backend services.
+**Base SDK** is an open-source SDK for backend integration that helps developers easily connect APIs, manage services, and build scalable applications faster. It’s designed to reduce complexity and improve development efficiency. Whether you're looking to build apps with SDK integrations, connect multiple APIs, or create scalable backend workflows, Sereni Base SDK provides a reliable foundation for modern development.
 
 ## Key Features
 
