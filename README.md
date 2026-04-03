@@ -1,3 +1,16 @@
+# API Documentation
+
+Full API documentation is auto-generated using [TypeDoc](https://typedoc.org/). To generate and view docs locally:
+
+```bash
+npm run docs
+open docs/index.html
+```
+
+Inline code is documented with JSDoc comments for clarity and IDE support.
+# Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, and use the provided issue and pull request templates. All contributors must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 # serenibase-sdk - TypeScript SDK for SereniBase UI
 
 > Enterprise-grade TypeScript SDK and open source backend SDK for SereniBase platform integration. A comprehensive developer toolkit and API integration SDK providing type-safe API communication, authentication management, and complete service layer for workspace, database, and data operations.
@@ -5,6 +18,9 @@
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+[![CI](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/aptlogica/base-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/aptlogica/base-sdk)
 
 ## Overview
 
@@ -117,6 +133,9 @@ npm test
 
 # Run tests with coverage
 npm run test:coverage
+
+# View coverage report
+open coverage/lcov-report/index.html
 
 # Run integration tests
 npm run test:integration
