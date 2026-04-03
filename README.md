@@ -1,3 +1,16 @@
+# API Documentation
+
+Full API documentation is auto-generated using [TypeDoc](https://typedoc.org/). To generate and view docs locally:
+
+```bash
+npm run docs
+open docs/index.html
+```
+
+Inline code is documented with JSDoc comments for clarity and IDE support.
+# Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, and use the provided issue and pull request templates. All contributors must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 # serenibase-sdk - TypeScript SDK for SereniBase UI
 
 > Enterprise-grade TypeScript SDK and open source backend SDK for SereniBase platform integration. A comprehensive developer toolkit and API integration SDK providing type-safe API communication, authentication management, and complete service layer for workspace, database, and data operations.
@@ -5,11 +18,13 @@
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Quality Gate Status](https://sonar.aptlogica.com/api/project_badges/quality_gate?project=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1&token=sqb_5d01b701b8091514f115d0f522a40ee687fd6809)](https://sonar.aptlogica.com/dashboard?id=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1)
+
+[![CI](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/aptlogica/base-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/aptlogica/base-sdk)
 
 ## Overview
 
-**serenibase-sdk** is the official TypeScript SDK and developer SDK providing a comprehensive, enterprise-grade interface for SereniBase Backend API integration. This professionally maintained API SDK and backend integration SDK offers type-safe API communication via TypeScript API client, robust authentication management, and complete backend operation capabilities as an open source sdk, a typescript backend toolkit, a nodejs sdk, a developer api toolkit, and a typescript developer toolkit. A complete Node.js SDK and developer tools SDK for backend services.
+**Base SDK** is an open-source SDK for backend integration that helps developers easily connect APIs, manage services, and build scalable applications faster. It’s designed to reduce complexity and improve development efficiency. Whether you're looking to build apps with SDK integrations, connect multiple APIs, or create scalable backend workflows, Sereni Base SDK provides a reliable foundation for modern development.
 
 ## Key Features
 
@@ -43,8 +58,11 @@ import { SereniBaseClient } from 'serenibase-sdk';
 
 // Initialize client
 const client = new SereniBaseClient({
-  apiUrl: 'https://api.serenibase.com',
-  apiKey: 'your-api-key'
+  baseURL: 'https://api.serenibase.com',
+  auth: {
+    type: 'bearer',
+    token: 'your-api-token'
+  }
 });
 
 // Authenticate user
@@ -54,19 +72,20 @@ const authResult = await client.auth.login({
 });
 
 // Create a new workspace
-const workspace = await client.workspaces.create({
+const workspace = await client.workspace.create({
   name: 'My Project',
   description: 'Project workspace'
 });
 
 // Create a base within the workspace
-const base = await client.bases.create(workspace.id, {
-  name: 'Customer Database',
-  description: 'Customer management system'
+const base = await client.baseService.create({
+  title: 'Customer Database',
+  description: 'Customer management system',
+  workspace_id: workspace.id
 });
 
 // Add a table to the base
-const table = await client.tables.create(base.id, {
+const table = await client.tableService.create(base.id, {
   name: 'customers',
   fields: [
     { name: 'name', type: 'text', required: true },
@@ -102,9 +121,9 @@ npm run build
 
 ### Environment Configuration
 ```bash
-VITE_API_URL=http://localhost:8080
-VITE_WS_URL=ws://localhost:8080/ws
-VITE_API_VERSION=v1
+SERENIBASE_BASE_URL=http://localhost:8080
+SERENIBASE_API_TOKEN=replace-me
+SERENIBASE_TIMEOUT_MS=30000
 ```
 
 ### Testing
@@ -114,6 +133,9 @@ npm test
 
 # Run tests with coverage
 npm run test:coverage
+
+# View coverage report
+open coverage/lcov-report/index.html
 
 # Run integration tests
 npm run test:integration
