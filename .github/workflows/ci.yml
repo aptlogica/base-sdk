@@ -1,6 +1,3 @@
-
-permissions:
-  contents: read
 name: CI
 
 on:
@@ -11,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
-  checks: write
 
 jobs:
   test:
@@ -22,10 +17,9 @@ jobs:
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         
       - name: Setup Node.js
-        uses: actions/setup-node@a0c6e1e2e1e709b6e6e1e1e1e1e1e1e1e1e1e1e1
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '18'
-          cache: npm
           
       - name: Install dependencies
         run: npm install
@@ -33,8 +27,8 @@ jobs:
       - name: Run linting
         run: npm run lint
 
-        - name: Run Prettier check
-          run: npm run format:check
+      - name: Run Prettier check
+        run: npm run format:check
         
       - name: Run type checking
         run: npm run type-check
@@ -44,7 +38,7 @@ jobs:
         run: npm run test:coverage || npm run test -- --runInBand
         
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v3.1.4 # eaaf4bedf32dbdc6b720b63067d99c4d77d6047d
+        uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3.1.4
         if: always()
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
