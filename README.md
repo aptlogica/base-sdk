@@ -15,12 +15,26 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 > Enterprise-grade TypeScript SDK and open source backend SDK for SereniBase platform integration. A comprehensive developer toolkit and API integration SDK providing type-safe API communication, authentication management, and complete service layer for workspace, database, and data operations.
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/npm-9+-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</p>
 
-[![CI](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml)
-[![Coverage](https://codecov.io/gh/aptlogica/base-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/aptlogica/base-sdk)
+<p align="center">
+  <a href="https://sonar.aptlogica.com/dashboard?id=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1">
+    <img src="https://sonar.aptlogica.com/api/project_badges/measure?project=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1&metric=alert_status&token=sqb_fbb5149b91736778a58c20fec7d4a1400f60ca51" alt="Quality Gate">
+  </a>
+  <a href="https://sonar.aptlogica.com/dashboard?id=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1">
+    <img src="https://sonar.aptlogica.com/api/project_badges/measure?project=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1&metric=coverage&token=sqb_fbb5149b91736778a58c20fec7d4a1400f60ca51" alt="Coverage">
+  </a>
+  <a href="https://sonar.aptlogica.com/dashboard?id=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1">
+    <img src="https://sonar.aptlogica.com/api/project_badges/measure?project=aptlogica_base-sdk_831f5ed1-22c6-4f6b-830a-bf0629564fb1&metric=security_rating&token=sqb_fbb5149b91736778a58c20fec7d4a1400f60ca51" alt="Security">
+  </a>
+  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
+  <img src="https://img.shields.io/badge/Status-Beta-orange.svg?style=flat-square" alt="Beta">
 
 ## Overview
 
