@@ -18,6 +18,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Faptlogica%2Fbase-sdk.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Faptlogica%2Fbase-sdk?ref=badge_shield)
 
 [![CI](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml)
 [![Coverage](https://codecov.io/gh/aptlogica/base-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/aptlogica/base-sdk)
@@ -148,3 +149,6 @@ See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
 ## License
 
 MIT License. Copyright (c) 2026 Aptlogica Technologies.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Faptlogica%2Fbase-sdk.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Faptlogica%2Fbase-sdk?ref=badge_large)
