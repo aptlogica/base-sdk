@@ -147,4 +147,4 @@ See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
 
 ## License
 
-MIT License. Copyright (c) 2026 Aptlogica Technologies.
+This project is licensed under the Apache License 2.0. Copyright (c) 2026 Aptlogica Technologies.
