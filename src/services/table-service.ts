@@ -165,6 +165,23 @@ export class TableService {
         return this.columnService.reorder(params);
     }
 
+
+    /**     
+     * Reset column (delete all data and relations, but keep column)
+     * POST /column/reset
+     */
+    resetColumn(params: types.ResetColumn) {
+        return this.columnService.reset(params);
+    }
+
+    /**     
+     * Bulk Update column (update column data in bulk, for eg: update multiple option values in single select column)
+     * POST /column/bulk-update
+     */
+    bulkUpdateColumn(params: types.BulkUpdateColumn) {
+        return this.columnService.bulkUpdate(params);
+    }
+
     // ============ ROW ENDPOINTS ============
     // Delegated to RowService for better code organization
 
