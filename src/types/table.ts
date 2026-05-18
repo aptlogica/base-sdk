@@ -104,6 +104,12 @@ export interface BulkInsertRow {
   rows: Array<Record<string, any>>;
 }
 
+export interface UpdateRow {
+  model_id: string;
+  row_id: number;
+  values: Record<string, any>;
+}
+
 // -------- Views --------
 export interface CreateView {
   model_id: string;

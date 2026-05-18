@@ -54,6 +54,14 @@ export class RowService {
     }
 
     /**
+     * Update row values
+     * PATCH /row/update
+     */
+    update(params: types.UpdateRow) {
+        return this.http.patch(`/row/update`, params);
+    }
+
+    /**
      * Insert row data
      * POST /row/data/insert
      */
