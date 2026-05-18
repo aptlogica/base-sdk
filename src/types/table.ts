@@ -99,6 +99,11 @@ export interface BulkDeleteRow {
   row_ids: number[];
 }
 
+export interface BulkInsertRow {
+  model_id: string;
+  rows: Array<Record<string, any>>;
+}
+
 // -------- Views --------
 export interface CreateView {
   model_id: string;
@@ -146,18 +151,3 @@ export interface ImportTable {
   file: File;
 }
 
-export interface ResetColumn {
-  model_id: string;
-  column_id: string;
-}
-
-
-export interface Updates {
-  id: any;
-  value: any;
-}
-export interface BulkUpdateColumn {
-  model_id: string;
-  column_id: string;
-  updates: Updates[];
-}

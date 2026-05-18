@@ -46,6 +46,14 @@ export class RowService {
     }
 
     /**
+     * Bulk insert multiple rows
+     * POST /row/bulk-insert
+     */
+    bulkInsert(params: types.BulkInsertRow) {
+        return this.http.post(`/row/bulk-insert`, params);
+    }
+
+    /**
      * Insert row data
      * POST /row/data/insert
      */
