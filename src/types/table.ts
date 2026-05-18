@@ -151,3 +151,19 @@ export interface ImportTable {
   file: File;
 }
 
+export interface ResetColumn {
+  model_id: string;
+  column_id: string;
+}
+
+
+export interface Updates {
+  id: any;
+  value: any;
+}
+export interface BulkUpdateColumn {
+  model_id: string;
+  column_id: string;
+  updates: Updates[];
+}
+
