@@ -22,10 +22,11 @@ export class RowService {
     }
 
     /**
-     * Create new record/row
+     * Create new record/row or bulk insert rows
      * POST /row/create
+     * @param params - Can create single row with just model_id, or bulk insert with model_id and rows[]
      */
-    create(params: types.CreateRow) {
+    create(params: types.CreateRowOrBulkInsertRequest) {
         return this.http.post(`/row/create`, params);
     }
 
@@ -43,14 +44,6 @@ export class RowService {
      */
     bulkDelete(params: types.BulkDeleteRow) {
         return this.http.post(`/row/bulk-remove`, params);
-    }
-
-    /**
-     * Bulk insert multiple rows
-     * POST /row/bulk-insert
-     */
-    bulkInsert(params: types.BulkInsertRow) {
-        return this.http.post(`/row/bulk-insert`, params);
     }
 
     /**

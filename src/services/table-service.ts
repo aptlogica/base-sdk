@@ -194,10 +194,10 @@ export class TableService {
     }
 
     /**
-     * Create new record/row
+     * Create new record/row or bulk insert rows
      * POST /row/create
      */
-    createRow(params: types.CreateRow) {
+    createRow(params: types.CreateRowOrBulkInsertRequest) {
         return this.rowService.create(params);
     }
 

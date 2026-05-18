@@ -48,8 +48,11 @@ export interface ReorderColumn {
 }
 
 // -------- Rows --------
-export interface CreateRow {
+export interface CreateRowOrBulkInsertRequest {
   model_id: string;
+  rows?: Array<Record<string, any>>;
+  created_by?: string;
+  updated_by?: string;
 }
 
 export interface InsertRowData {
@@ -97,11 +100,6 @@ export interface DeleteRow {
 export interface BulkDeleteRow {
   model_id: string;
   row_ids: number[];
-}
-
-export interface BulkInsertRow {
-  model_id: string;
-  rows: Array<Record<string, any>>;
 }
 
 export interface UpdateRow {
