@@ -86,12 +86,10 @@ export class TableService {
             formData.append('base_id', params.base_id);
         }
         formData.append('workspace_id', params.workspace_id);
-        formData.append('title', params.title);
-        formData.append('description', params.description);
         formData.append('order_index', params.order_index.toString());
-        if (params.file) {
-            formData.append('file', params.file);
-        }
+        formData.append('config', JSON.stringify(params.config));
+        formData.append('primary_column', params.primary_column);
+        formData.append('file', params.file);
 
         const uploadLimits = this.http.getUploadLimits(true); // bulk upload
         const config: any = {
