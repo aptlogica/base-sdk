@@ -149,10 +149,25 @@ export interface AddImage {
 export interface ImportTable {
   base_id?: string;
   workspace_id: string;
-  title: string;
-  description: string;
   order_index: number;
   file: File;
+config: {
+    settings: {
+      remove_duplicate_records: boolean;
+      trim_spaces: boolean;
+      remove_extra_spaces: boolean;
+      [k: string]: any;
+    };
+    columns: Array<{
+      column_name: string;
+      title: string;
+      uidt: string;
+      meta?: Record<string, any>;
+      [k: string]: any;
+    }>;
+    [k: string]: any;
+  };
+  primary_column: string;
 }
 
 export interface ResetColumn {
