@@ -52,16 +52,24 @@ describe('TableService', () => {
     expect(mockHttpClient.delete).toHaveBeenCalledWith('/table/tid');
   });
   it('should call http.post on import', () => {
-    const params = { base_id: 'b', workspace_id: 'w', title: 't', description: 'd', order_index: 1, file: 'f' };
+    const config = {
+      settings: {
+        remove_duplicate_records: true,
+        trim_spaces: true,
+        remove_extra_spaces: true,
+      },
+      columns: []
+    };
+    const params = { base_id: 'b', workspace_id: 'w', order_index: 1, file: 'f', config, primary_column: 'id' };
     const formData = { append: jest.fn() };
     jest.spyOn(require('../../src/utils/form-data'), 'createFormData').mockReturnValue(formData);
     mockHttpClient.getUploadLimits.mockReturnValue({ maxContentLength: 100, maxBodyLength: 100 });
     service.import(params as any);
     expect(formData.append).toHaveBeenCalledWith('base_id', 'b');
     expect(formData.append).toHaveBeenCalledWith('workspace_id', 'w');
-    expect(formData.append).toHaveBeenCalledWith('title', 't');
-    expect(formData.append).toHaveBeenCalledWith('description', 'd');
     expect(formData.append).toHaveBeenCalledWith('order_index', '1');
+    expect(formData.append).toHaveBeenCalledWith('config', JSON.stringify(config));
+    expect(formData.append).toHaveBeenCalledWith('primary_column', 'id');
     expect(formData.append).toHaveBeenCalledWith('file', 'f');
     expect(mockHttpClient.post).toHaveBeenCalledWith(
       '/table/import',
