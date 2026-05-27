@@ -64,4 +64,20 @@ export class ColumnService {
     reorder(params: types.ReorderColumn) {
         return this.http.post(`/column/reorder`, params);
     }
+
+     /**
+     * Reorder columns in table
+     * POST /column/reset
+     */
+    reset(params: types.ResetColumn) {
+        return this.http.post(`/column/reset`, params);
+    }
+
+    /**
+     * Reorder columns in table
+     * POST /column/bulk-update
+     */
+    bulkUpdate(params: types.BulkUpdateColumn) {
+        return this.http.post(`/column/bulk-update`, params);
+    }
 }

@@ -48,8 +48,11 @@ export interface ReorderColumn {
 }
 
 // -------- Rows --------
-export interface CreateRow {
+export interface CreateRowOrBulkInsertRequest {
   model_id: string;
+  rows?: Array<Record<string, any>>;
+  created_by?: string;
+  updated_by?: string;
 }
 
 export interface InsertRowData {
@@ -99,6 +102,12 @@ export interface BulkDeleteRow {
   row_ids: number[];
 }
 
+export interface UpdateRow {
+  model_id: string;
+  row_id: number;
+  values: Record<string, any>;
+}
+
 // -------- Views --------
 export interface CreateView {
   model_id: string;
@@ -140,9 +149,40 @@ export interface AddImage {
 export interface ImportTable {
   base_id?: string;
   workspace_id: string;
-  title: string;
-  description: string;
   order_index: number;
   file: File;
+config: {
+    settings: {
+      remove_duplicate_records: boolean;
+      trim_spaces: boolean;
+      remove_extra_spaces: boolean;
+      [k: string]: any;
+    };
+    columns: Array<{
+      column_name: string;
+      title: string;
+      uidt: string;
+      meta?: Record<string, any>;
+      [k: string]: any;
+    }>;
+    [k: string]: any;
+  };
+  primary_column: string;
+}
+
+export interface ResetColumn {
+  model_id: string;
+  column_id: string;
+}
+
+
+export interface Updates {
+  id: any;
+  value: any;
+}
+export interface BulkUpdateColumn {
+  model_id: string;
+  column_id: string;
+  updates: Updates[];
 }
 

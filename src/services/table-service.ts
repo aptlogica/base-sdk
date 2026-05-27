@@ -86,12 +86,10 @@ export class TableService {
             formData.append('base_id', params.base_id);
         }
         formData.append('workspace_id', params.workspace_id);
-        formData.append('title', params.title);
-        formData.append('description', params.description);
         formData.append('order_index', params.order_index.toString());
-        if (params.file) {
-            formData.append('file', params.file);
-        }
+        formData.append('config', JSON.stringify(params.config));
+        formData.append('primary_column', params.primary_column);
+        formData.append('file', params.file);
 
         const uploadLimits = this.http.getUploadLimits(true); // bulk upload
         const config: any = {
@@ -165,6 +163,23 @@ export class TableService {
         return this.columnService.reorder(params);
     }
 
+
+    /**     
+     * Reset column (delete all data and relations, but keep column)
+     * POST /column/reset
+     */
+    resetColumn(params: types.ResetColumn) {
+        return this.columnService.reset(params);
+    }
+
+    /**     
+     * Bulk Update column (update column data in bulk, for eg: update multiple option values in single select column)
+     * POST /column/bulk-update
+     */
+    bulkUpdateColumn(params: types.BulkUpdateColumn) {
+        return this.columnService.bulkUpdate(params);
+    }
+
     // ============ ROW ENDPOINTS ============
     // Delegated to RowService for better code organization
 
@@ -177,10 +192,10 @@ export class TableService {
     }
 
     /**
-     * Create new record/row
+     * Create new record/row or bulk insert rows
      * POST /row/create
      */
-    createRow(params: types.CreateRow) {
+    createRow(params: types.CreateRowOrBulkInsertRequest) {
         return this.rowService.create(params);
     }
 
