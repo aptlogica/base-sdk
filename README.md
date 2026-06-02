@@ -15,12 +15,24 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 > Enterprise-grade TypeScript SDK and open source backend SDK for SereniBase platform integration. A comprehensive developer toolkit and API integration SDK providing type-safe API communication, authentication management, and complete service layer for workspace, database, and data operations.
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-[![CI](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml)
-[![Coverage](https://codecov.io/gh/aptlogica/base-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/aptlogica/base-sdk)
+<p align="center">
+<a href="LICENSE"><img src="https://img.shields.io/badge/Version-1.0.0-blue.svg?style=for-the-badge" alt="Version"></a>
+<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge" alt="TypeScript"></a>
+</p>
+
+<p align="center">
+<a href="https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml"><img src="https://github.com/aptlogica/base-sdk/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://github.com/aptlogica/base-sdk/actions/workflows/github-code-scanning/codeql"><img src="https://github.com/aptlogica/base-sdk/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL"></a>
+<a href="https://sonarcloud.io/dashboard?id=aptlogica_base-sdk"><img src="https://sonarcloud.io/api/project_badges/measure?project=aptlogica_base-sdk&metric=alert_status" alt="Quality Gate"></a>
+<a href="https://sonarcloud.io/dashboard?id=aptlogica_base-sdk"><img src="https://sonarcloud.io/api/project_badges/measure?project=aptlogica_base-sdk&metric=coverage" alt="Coverage"></a>
+<a href="https://sonarcloud.io/dashboard?id=aptlogica_base-sdk"><img src="https://sonarcloud.io/api/project_badges/measure?project=aptlogica_base-sdk&metric=security_rating" alt="Security"></a>
+</p>
+
+<p align="center">
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+</p>
+
 
 ## Overview
 
