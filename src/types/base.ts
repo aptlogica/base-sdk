@@ -13,6 +13,26 @@ export interface CreateBase {
   image?: File | Blob;
 }
 
+export interface CreateBaseWithAi {
+  prompt: string;
+}
+
+export interface ApplyBaseWithAi {
+  workspace_id: string;
+  sample_data?: boolean;
+  row?: number;
+  base_name: string;
+  relations: Array<Record<string, any>>;
+  tables: Array<{
+    name: string;
+    fields: Array<{
+      name: string;
+      type: string;
+      meta?: Record<string, any>;
+    }>;
+  }>;
+}
+
 export interface UpdateBase {
   title?: string;
   description?: string;

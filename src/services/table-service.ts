@@ -37,6 +37,22 @@ export class TableService {
     }
 
     /**
+     * Create new table using AI prompt
+     * POST /table/ai
+     */
+    createTableWithAi(params: types.CreateTableWithAi) {
+        return this.http.post(`/table/ai`, params);
+    }
+
+    /**
+     * Apply AI-generated table schema
+     * POST /table/ai/apply
+     */
+    applyTableWithAi(params: types.ApplyTableWithAi) {
+        return this.http.post(`/table/ai/apply`, params);
+    }
+
+    /**
      * Get table by ID
      * GET /table/:id
      */
@@ -341,3 +357,4 @@ export class TableService {
         return this.assetService.deleteById(id);
     }
 }
+ 

@@ -41,6 +41,22 @@ export class BaseService {
     }
 
     /**
+     * Preview new base using AI prompt
+     * POST /base/create/ai
+     */
+    createBaseWithAi(params: types.CreateBaseWithAi) {
+        return this.http.post(`/base/create/ai`, params);
+    }
+
+    /**
+     * Apply AI-generated base schema
+     * POST /base/create/ai/apply
+     */
+    applyBaseWithAi(params: types.ApplyBaseWithAi) {
+        return this.http.post(`/base/create/ai/apply`, params);
+    }
+
+    /**
      * Get base by ID
      * GET /base/:id
      */
@@ -183,3 +199,4 @@ export class BaseService {
         return this.http.post(`/base/${baseId}/remove`, params);
     }
 }
+ 

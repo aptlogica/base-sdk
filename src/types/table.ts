@@ -12,6 +12,25 @@ export interface CreateTable {
   order_index?: number;
 }
 
+export interface CreateTableWithAi {
+  prompt: string;
+}
+
+export interface ApplyTableWithAi {
+  base_id: string;
+  workspace_id: string;
+  sample_data?: boolean;
+  row?: number;
+  tables: Array<{
+    name: string;
+    fields: Array<{
+      name: string;
+      type: string;
+      meta?: Record<string, any>;
+    }>;
+  }>;
+}
+
 export interface UpdateTable {
   title?: string;
   meta?: any;
@@ -186,3 +205,4 @@ export interface BulkUpdateColumn {
   updates: Updates[];
 }
 
+ 
