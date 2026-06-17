@@ -80,4 +80,76 @@ export class ColumnService {
     bulkUpdate(params: types.BulkUpdateColumn) {
         return this.http.post(`/column/bulk-update`, params);
     }
+
+    /**
+     * Trim whitespace in columns
+     * POST /column/trim-whitespace
+     */
+    trimWhitespace(params: types.TrimWhitespace) {
+        return this.http.post(`/column/trim-whitespace`, params);
+    }
+
+    /**
+     * Case normalize columns
+     * POST /column/case-normalize
+     */
+    caseNormalize(params: types.CaseNormalizationRequest) {
+        return this.http.post(`/column/case-normalize`, params);
+    }
+
+    /**
+     * Find and replace values in columns
+     * POST /column/find-replace
+     */
+    findReplace(params: types.FindReplaceRequest) {
+    return this.http.post(`/column/find-replace`, params);
+    }
+
+    /**
+     * Remove special characters from columns
+     * POST /column/remove-special-characters
+     */
+    removeSpecialCharacters(params: types.RemoveSpecialCharactersRequest) {
+        return this.http.post(`/column/remove-special-characters`, params);
+    }
+
+    /**
+     * Remove duplicates from columns
+     * POST /column/remove-duplicates
+     */
+    removeDuplicates(params: types.RemoveDuplicatesRequest) {
+        return this.http.post(`/column/remove-duplicates`, params);
+    }
+
+    /**
+     * Remove formatting from columns
+     * POST /column/remove-formatting
+     */
+    removeFormatting(params: types.RemoveFormattingRequest) {
+        return this.http.post(`/column/remove-formatting`, params);
+    }
+
+    /**
+     * Merge multiple columns into one
+     * POST /column/merge-columns
+     */
+    mergeColumns(params: types.MergeColumnsRequest) {
+        return this.http.post(`/column/merge-columns`, params);
+    }
+
+    /**
+     * Split a column into multiple columns
+     * POST /column/split
+     */
+    splitColumn(params: types.ColumnSplitRequest) {
+        return this.http.post(`/column/split`, params);
+    }
+
+    /**
+     * Extract substring from a column
+     * POST /column/extract-substring
+     */
+    extractSubstring(params: types.ExtractSubstringRequest) {
+        return this.http.post(`/column/extract-substring`, params);
+    }
 }

@@ -186,3 +186,103 @@ export interface BulkUpdateColumn {
   updates: Updates[];
 }
 
+// -------- Column Utilities --------
+export interface TrimWhitespace {
+  model_id: string;
+  columns: string[];
+  trim_mode: 'trim_both' | 'trim_leading' | 'trim_trailing' | 'collapse_spaces';
+}
+
+export interface CaseNormalizationRequest {
+  model_id: string;
+  columns: string[];
+  case_format: 'lowercase' | 'uppercase' | 'title_case' | 'sentence_case';
+}
+
+export interface FindReplaceRequest {
+  model_id: string;
+  columns: string[];
+  find_value: string;
+  replace_value: string;
+  match_type: 'match_case' | 'ignore_case' | 'match_entire_value';
+}
+
+export interface RemoveSpecialCharactersRequest {
+  model_id: string;
+  columns: string[];
+  special_characters_type: 'symbols'| 'currency_symbols'| 'brackets'| 'punctuation'| 'custom';
+  custom?: string[];
+}
+
+export interface RemoveDuplicatesRequest {
+  model_id: string;
+  columns: string[];
+  duplicate:'remove_row'| 'remove_duplicates'| 'remove_duplicates_matchCase';
+  keep_rule:| 'keep_first'| 'keep_last'| 'keep_latest_updated';
+}
+
+export interface RemoveFormattingRequest {
+  model_id: string;
+  columns: string[];
+  formatting: 'currency' | 'percentage' | 'separator' | 'phone' | 'date' | 'custom';
+  custom_pattern?: string[];
+}
+
+// -------- Merge Columns --------
+export interface MergeColumnsRequest {
+  model_id: string;
+  columns: string[];
+  new_column_title?: string;
+  merge_format: 'space' | 'comma' | 'dash' | 'custom';
+  custom_separator?: string;
+  keep_original_column: boolean;
+  add_at_end: boolean;
+}
+
+// -------- Extract Substring --------
+export interface ExtractSubstringRequest {
+  model_id: string;
+  column_id: string;
+  extraction_method: 'extraction_type' | 'between_characters';
+  extraction_type?: "email" | "keywords" | "mentions" | "tags" | "url" | "domain" | "emoji" | "phone" | "prefix";
+  start_after?: string;
+  end_before?: string;
+  keep_original_column: boolean;
+  add_at_end: boolean;
+}
+
+// -------- Column Split --------
+export type FixedLengthAction = 'before' | 'after';
+
+export interface SeparatorConfig {
+  type: 'separator';
+  config: {
+    separator: string;
+  };
+}
+
+export interface FixedLengthConfig {
+  type: 'fixedLength';
+  config: {
+    action: FixedLengthAction;
+    value: number;
+  };
+}
+
+export interface PatternConfig {
+  type: 'pattern';
+  config: {
+    pattern: string;
+  };
+}
+
+export type SplitByRequest = SeparatorConfig | FixedLengthConfig | PatternConfig;
+
+export interface ColumnSplitRequest {
+  modelId: string;
+  columnId: string;
+  splitBy: SplitByRequest;
+  keepOriginal: boolean;
+  where: 'next' | 'end';
+  limit?: number;
+}
