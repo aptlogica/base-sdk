@@ -30,6 +30,14 @@ describe('TableService', () => {
     service.create(params as any);
     expect(mockHttpClient.post).toHaveBeenCalledWith('/table/create', params);
   });
+  it('should call http.get on getPrimaryKey', () => {
+    service.getPrimaryKey('tid');
+    expect(mockHttpClient.get).toHaveBeenCalledWith('/table/tid/primary-key');
+  });
+  it('should call http.put on updatePrimaryKey', () => {
+    service.updatePrimaryKey('tid', ['c1', 'c2']);
+    expect(mockHttpClient.put).toHaveBeenCalledWith('/table/tid/primary-key', { column_ids: ['c1', 'c2'] });
+  });
   it('should call http.get on getById (no options)', () => {
     service.getById('tid');
     expect(mockHttpClient.get).toHaveBeenCalledWith('/table/tid');

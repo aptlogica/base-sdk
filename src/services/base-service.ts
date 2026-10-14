@@ -31,6 +31,10 @@ export class BaseService {
             formData.append('image', params.image);
         }
 
+        if (params.meta !== undefined) {
+            formData.append('meta', JSON.stringify(params.meta));
+        }
+
         const uploadLimits = this.http.getUploadLimits(false);
         return this.http.post(`/base/create`, formData, {
             headers: {
@@ -73,6 +77,10 @@ export class BaseService {
 
         if (params.visibility !== undefined) {
             formData.append('visibility', params.visibility);
+        }
+
+        if (params.meta !== undefined) {
+            formData.append('meta', JSON.stringify(params.meta));
         }
 
         const uploadLimits = this.http.getUploadLimits(false);
