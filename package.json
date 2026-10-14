@@ -46,11 +46,11 @@
     "formdata-node": "^6.0.3"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^1.0.0",
-    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
@@ -61,8 +61,8 @@
     "rollup": "^4.21.2",
     "ts-jest": "^29.2.5",
     "tslib": "^2.8.1",
-    "typedoc": "^0.26.7",
-    "typescript": "^5.6.2"
+    "typedoc": "^0.28.20",
+    "typescript": "~5.9"
   },
   "overrides": {
     "serialize-javascript": "^7.1.2",
