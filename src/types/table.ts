@@ -55,11 +55,73 @@ export interface CreateRowOrBulkInsertRequest {
   updated_by?: string;
 }
 
+/**
+ * POST /row/data/insert works as an upsert:
+ * - without row_id: creates a record from `values`
+ * - with row_id: updates that record from `values` and/or one cell via column_id + value
+ */
 export interface InsertRowData {
   model_id: string;
-  column_id: string;
-  row_id: number;
-  value: any;
+  row_id?: number;
+  column_id?: string;
+  value?: any;
+  /** Column ID -> value */
+  values?: Record<string, any>;
+}
+
+export interface UpsertRow {
+  model_id: string;
+  /** Omit to create a new record */
+  row_id?: number;
+  /** Column ID -> value */
+  values: Record<string, any>;
+}
+
+export interface UpsertRowResult {
+  record: Record<string, any>;
+  related_record?: Record<string, any>;
+}
+
+// ============ PRIMARY KEY ============
+
+export interface PrimaryKeyColumn {
+  id: string;
+  title: string;
+  column_name: string;
+  uidt: string;
+  system: boolean;
+  in_key: boolean;
+  eligible: boolean;
+  /** Why the column can't be a key field */
+  reason?: string;
+}
+
+export interface PrimaryKey {
+  model_id: string;
+  /** Key order */
+  column_ids: string[];
+  column_names: string[];
+  /** True while link fields store this table's key values */
+  locked: boolean;
+  link_columns: string[];
+  columns: PrimaryKeyColumn[];
+}
+
+export interface UpdatePrimaryKey {
+  /** Key order */
+  column_ids: string[];
+}
+
+/** error.details when error.code === 'PKY_1004' */
+export interface PrimaryKeyViolation {
+  message: string;
+  columns: string[];
+  column_titles: string[];
+  null_count: number;
+  empty_fields: { column: string; title: string; count: number }[];
+  null_records: { id: number; title: string; missing?: string[] }[];
+  duplicate_groups: number;
+  duplicates: { values: Record<string, unknown>; count: number; record_ids: number[] }[];
 }
 
 export interface InsertRelationData {
