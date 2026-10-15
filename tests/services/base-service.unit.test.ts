@@ -57,6 +57,28 @@ describe('BaseService', () => {
     });
   });
 
+  describe('meta', () => {
+    it('create should append meta as a JSON string', async () => {
+      const formData = { append: jest.fn() };
+      (createFormData as jest.Mock).mockReturnValue(formData);
+      await service.create({ title: 't', description: 'd', workspace_id: 'w', meta: { date_format: 'DD/MM/YYYY' } });
+      expect(formData.append).toHaveBeenCalledWith('meta', JSON.stringify({ date_format: 'DD/MM/YYYY' }));
+    });
+    it('update should append meta as a JSON string', async () => {
+      const formData = { append: jest.fn() };
+      (createFormData as jest.Mock).mockReturnValue(formData);
+      await service.update('id', { meta: { pinnedTables: ['t1'] } });
+      expect(formData.append).toHaveBeenCalledWith('meta', JSON.stringify({ pinnedTables: ['t1'] }));
+      expect(mockHttpClient.put).toHaveBeenCalledWith('/base/id', formData, expect.any(Object));
+    });
+    it('update should not append meta when undefined', async () => {
+      const formData = { append: jest.fn() };
+      (createFormData as jest.Mock).mockReturnValue(formData);
+      await service.update('id', { title: 't' });
+      expect(formData.append).not.toHaveBeenCalledWith('meta', expect.anything());
+    });
+  });
+
   describe('update', () => {
     it('should append all fields except image and call http.put, then uploadImage if image provided', async () => {
       const params = { title: 't', description: 'd', icon: 'i', status: 's', visibility: 'v', image: 'img' as any };
