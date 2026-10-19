@@ -77,6 +77,8 @@
     "type-detect": "^4.1.0",
     "undici-types": "^8.12.1",
     "@types/resolve": "^1.20.6",
-    "mime-db": "^1.54.0"
+    "mime-db": "^1.54.0",
+    "pretty-format": "30.3.0",
+    "escape-string-regexp": "^5.0.0"
   }
 }
