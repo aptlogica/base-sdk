@@ -79,6 +79,6 @@
     "@types/resolve": "^1.20.6",
     "mime-db": "^1.54.0",
     "pretty-format": "30.3.0",
-    "execa": "^10.2.0"
+    "find-up": "^8.0.0"
   }
 }
