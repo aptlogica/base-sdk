@@ -14,7 +14,7 @@ export interface OrganizationResponse {
   updated_at: string;
 }
 
-export interface OrganizationListResponse extends OrganizationResponse {}
+export type OrganizationListResponse = OrganizationResponse;
 
 export interface OrganizationUpdateRequest {
   name?: string;
