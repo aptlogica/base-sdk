@@ -40,7 +40,8 @@ export interface StandardResponse<T = any> {
 export interface ErrorInfo {
   code: string;
   message: string;
-  details?: string;
+  /** String, or a structured object for some codes (e.g. PrimaryKeyViolation for PKY_1004) */
+  details?: any;
 }
 
 export interface PaginationParams {
@@ -65,3 +66,17 @@ export interface PaginatedResponse<T> {
     previous_page?: number;
   };
 }
+
+
+export type { CreateBase, UpdateBase } from './base';
+export type {
+  InsertRowData,
+  UpsertRow,
+  UpsertRowResult,
+  PrimaryKey,
+  PrimaryKeyColumn,
+  UpdatePrimaryKey,
+  PrimaryKeyViolation,
+} from './table';
+export * from './automation';
+export * from './table-constraint';

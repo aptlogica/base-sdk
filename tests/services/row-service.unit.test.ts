@@ -64,6 +64,18 @@ describe('RowService', () => {
     expect(mockHttpClient.post).toHaveBeenCalledWith('/row/data/insert', params);
   });
 
+  it('should call http.post on upsert', () => {
+    const params = { model_id: 'm1', values: { c1: 'a', c2: 2 } };
+    service.upsert(params);
+    expect(mockHttpClient.post).toHaveBeenCalledWith('/row/data/insert', params);
+  });
+
+  it('should call http.post on upsert with row_id', () => {
+    const params = { model_id: 'm1', row_id: 7, values: { c1: 'b' } };
+    service.upsert(params);
+    expect(mockHttpClient.post).toHaveBeenCalledWith('/row/data/insert', params);
+  });
+
   it('should call http.post on insertRelation', () => {
     const params = { foo: 5 };
     service.insertRelation(params as any);
