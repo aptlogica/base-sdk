@@ -55,11 +55,19 @@ export class RowService {
     }
 
     /**
-     * Insert row data
+     * Insert row data (upsert)
      * POST /row/data/insert
      */
     insertData(params: types.InsertRowData) {
-        return this.http.post(`/row/data/insert`, params);
+        return this.http.post<types.UpsertRowResult>(`/row/data/insert`, params);
+    }
+
+    /**
+     * Create a record (no row_id) or update one (row_id) from a column ID -> value map
+     * POST /row/data/insert
+     */
+    upsert(params: types.UpsertRow) {
+        return this.http.post<types.UpsertRowResult>(`/row/data/insert`, params);
     }
 
     /**

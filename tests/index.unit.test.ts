@@ -11,6 +11,8 @@ import { OrganizationService } from '@src/services/organization-service';
 import { ColumnService } from '@src/services/column-service';
 import { RowService } from '@src/services/row-service';
 import { ViewService } from '@src/services/view-service';
+import { AutomationService } from '@src/services/automation-service';
+import { TableConstraintService } from '@src/services/table-constraint-service';
 import type { ClientConfig } from '@src/types';
 
 jest.mock('@src/client/http-client');
@@ -24,6 +26,8 @@ jest.mock('@src/services/organization-service');
 jest.mock('@src/services/column-service');
 jest.mock('@src/services/row-service');
 jest.mock('@src/services/view-service');
+jest.mock('@src/services/automation-service');
+jest.mock('@src/services/table-constraint-service');
 
 describe('SereniBaseClient', () => {
   let config: ClientConfig;
@@ -45,6 +49,8 @@ describe('SereniBaseClient', () => {
     expect(ColumnService).toHaveBeenCalledWith(expect.any(HttpClient));
     expect(RowService).toHaveBeenCalledWith(expect.any(HttpClient));
     expect(ViewService).toHaveBeenCalledWith(expect.any(HttpClient));
+    expect(AutomationService).toHaveBeenCalledWith(expect.any(HttpClient));
+    expect(TableConstraintService).toHaveBeenCalledWith(expect.any(HttpClient));
   });
 
   it('should call setAuth on HttpClient', () => {
