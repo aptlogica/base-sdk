@@ -68,7 +68,7 @@ describe('TableService', () => {
       },
       columns: []
     };
-    const params = { base_id: 'b', workspace_id: 'w', order_index: 1, file: 'f', config, primary_column: 'id' };
+    const params = { base_id: 'b', workspace_id: 'w', order_index: 1, file: 'f', config };
     const formData = { append: jest.fn() };
     jest.spyOn(require('../../src/utils/form-data'), 'createFormData').mockReturnValue(formData);
     mockHttpClient.getUploadLimits.mockReturnValue({ maxContentLength: 100, maxBodyLength: 100 });
@@ -77,7 +77,6 @@ describe('TableService', () => {
     expect(formData.append).toHaveBeenCalledWith('workspace_id', 'w');
     expect(formData.append).toHaveBeenCalledWith('order_index', '1');
     expect(formData.append).toHaveBeenCalledWith('config', JSON.stringify(config));
-    expect(formData.append).toHaveBeenCalledWith('primary_column', 'id');
     expect(formData.append).toHaveBeenCalledWith('file', 'f');
     expect(mockHttpClient.post).toHaveBeenCalledWith(
       '/table/import',

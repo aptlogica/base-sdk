@@ -152,4 +152,8 @@ export class ColumnService {
     extractSubstring(params: types.ExtractSubstringRequest) {
         return this.http.post(`/column/extract-substring`, params);
     }
+
+    fuzzyDuplicates(params: types.FuzzyDuplicationRequest) {
+        return this.http.post('/column/fuzzy-duplicates', params);
+    }
 }
