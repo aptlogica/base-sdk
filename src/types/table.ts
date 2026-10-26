@@ -20,6 +20,26 @@ export interface UpdateTable {
 }
 
 // -------- Columns --------
+
+/**
+ * Meta of a links column (the parts that matter for showing linked records).
+ * `display_column_id` is the id of the column of the linked table that the link shows as the label of a
+ * linked record. It is chosen when the link is created and can be edited later. When it is missing the
+ * first text column of the linked table is shown.
+ * When a link is created, `relation.inverse_display_column_id` sets the same for the partner link column
+ * on the other table; it is not stored on the new column.
+ */
+export interface LinkColumnMeta {
+  relation?: {
+    type?: 'one-to-one' | 'has-many' | 'many-to-many';
+    with?: string;
+    inverse_title?: string;
+    inverse_display_column_id?: string;
+  };
+  display_column_id?: string;
+  [k: string]: any;
+}
+
 export interface AddColumn {
   model_id: string;
   base_id: string;
@@ -229,7 +249,6 @@ config: {
     }>;
     [k: string]: any;
   };
-  primary_column: string;
 }
 
 export interface ResetColumn {
@@ -347,4 +366,13 @@ export interface ColumnSplitRequest {
   keepOriginal: boolean;
   where: 'next' | 'end';
   limit?: number;
+}
+export interface FuzzyDuplicationRequest {
+  model_id: string;
+  columns: string[];
+  threshold: 'low' | 'medium' | 'high';
+  duplicate: 'remove_row' | 'remove_duplicates';
+  keep_rule: 'keep_first' | 'keep_last' | 'keep_latest_updated';
+  deduplication_mode?: 'automatic' | 'manual';
+  row_actions?: Record<string, 'keep' | 'delete' | 'clear' | 'none'>;
 }

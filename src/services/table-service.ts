@@ -105,7 +105,6 @@ export class TableService {
         formData.append('workspace_id', params.workspace_id);
         formData.append('order_index', params.order_index.toString());
         formData.append('config', JSON.stringify(params.config));
-        formData.append('primary_column', params.primary_column);
         formData.append('file', params.file);
 
         const uploadLimits = this.http.getUploadLimits(true); // bulk upload
