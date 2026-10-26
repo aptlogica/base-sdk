@@ -121,4 +121,53 @@ describe('AssetService', () => {
       expect(mockHttpClient.delete).toHaveBeenCalledWith('/asset/id2');
     });
   });
+
+  describe('addImage', () => {
+    const originalFormData = global.FormData;
+    let appendMock: jest.Mock;
+
+    beforeEach(() => {
+      appendMock = jest.fn();
+      (global as any).FormData = jest.fn(() => ({ append: appendMock }));
+    });
+
+    afterEach(() => {
+      global.FormData = originalFormData;
+    });
+
+    it('should append each file and call http.post with unlimited size config', () => {
+      const files = [{ name: 'a' }, { name: 'b' }];
+      service.addImage({ files } as any);
+      expect(appendMock).toHaveBeenCalledWith('files', files[0]);
+      expect(appendMock).toHaveBeenCalledWith('files', files[1]);
+      const [url, formData, config] = mockHttpClient.post.mock.calls[0];
+      expect(url).toBe('/asset/upload-image');
+      expect(formData.append).toBe(appendMock);
+      expect(config).toEqual({
+        headers: { 'content-type': 'multipart/form-data' },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      });
+    });
+
+    it('should not append when files is not an array', () => {
+      service.addImage({} as any);
+      expect(appendMock).not.toHaveBeenCalled();
+      expect(mockHttpClient.post).toHaveBeenCalledWith(
+        '/asset/upload-image',
+        expect.anything(),
+        expect.not.objectContaining({ onUploadProgress: expect.anything() })
+      );
+    });
+
+    it('should add onUploadProgress if extra provided', () => {
+      const extra = jest.fn();
+      service.addImage({ files: [] } as any, extra);
+      expect(mockHttpClient.post).toHaveBeenCalledWith(
+        '/asset/upload-image',
+        expect.anything(),
+        expect.objectContaining({ onUploadProgress: extra })
+      );
+    });
+  });
 });

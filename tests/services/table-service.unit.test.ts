@@ -46,6 +46,18 @@ describe('TableService', () => {
     service.getById('tid', { page: 2, page_size: 50 });
     expect(mockHttpClient.get).toHaveBeenCalledWith('/table/tid?page=2&page_size=50');
   });
+  it('should default page_size on getById when only page given', () => {
+    service.getById('tid', { page: 3 });
+    expect(mockHttpClient.get).toHaveBeenCalledWith('/table/tid?page=3&page_size=30');
+  });
+  it('should default page on getById when only page_size given', () => {
+    service.getById('tid', { page_size: 10 });
+    expect(mockHttpClient.get).toHaveBeenCalledWith('/table/tid?page=1&page_size=10');
+  });
+  it('should ignore empty options on getById', () => {
+    service.getById('tid', {});
+    expect(mockHttpClient.get).toHaveBeenCalledWith('/table/tid');
+  });
   it('should call http.get on getAll', () => {
     service.getAll();
     expect(mockHttpClient.get).toHaveBeenCalledWith('/table/');
@@ -85,6 +97,21 @@ describe('TableService', () => {
       expect.objectContaining({ headers: expect.any(Object) })
     );
   });
+  it('should skip base_id and set onUploadProgress on import', () => {
+    const params = { workspace_id: 'w', order_index: 0, file: 'f', config: {}, primary_column: 'id' };
+    const formData = { append: jest.fn() };
+    jest.spyOn(require('../../src/utils/form-data'), 'createFormData').mockReturnValue(formData);
+    mockHttpClient.getUploadLimits.mockReturnValue({ maxContentLength: 100, maxBodyLength: 100 });
+    const extra = jest.fn();
+    service.import(params as any, extra);
+    expect(formData.append).not.toHaveBeenCalledWith('base_id', expect.anything());
+    expect(mockHttpClient.getUploadLimits).toHaveBeenCalledWith(true);
+    expect(mockHttpClient.post).toHaveBeenCalledWith(
+      '/table/import',
+      formData,
+      expect.objectContaining({ onUploadProgress: extra, maxContentLength: 100, maxBodyLength: 100 })
+    );
+  });
 
   // Column endpoints (delegated)
   it('should delegate getColumnsByTableId', () => {
@@ -121,6 +148,20 @@ describe('TableService', () => {
     const spy = jest.spyOn(service['columnService'], 'reorder');
     service.reorderColumn({ order: [1, 2] } as any);
     expect(spy).toHaveBeenCalled();
+  });
+  it('should delegate resetColumn', () => {
+    const spy = jest.spyOn(service['columnService'], 'reset');
+    const params = { column_id: 'cid' };
+    service.resetColumn(params as any);
+    expect(spy).toHaveBeenCalledWith(params);
+    expect(mockHttpClient.post).toHaveBeenCalledWith('/column/reset', params);
+  });
+  it('should delegate bulkUpdateColumn', () => {
+    const spy = jest.spyOn(service['columnService'], 'bulkUpdate');
+    const params = { column_id: 'cid', updates: [] };
+    service.bulkUpdateColumn(params as any);
+    expect(spy).toHaveBeenCalledWith(params);
+    expect(mockHttpClient.post).toHaveBeenCalledWith('/column/bulk-update', params);
   });
 
   // Row endpoints (delegated)
@@ -160,6 +201,12 @@ describe('TableService', () => {
     const params = { model_id: 1, column_id: 2, row_id: 3, files: [] };
     service.addAttachment(params as any);
     expect(spy).toHaveBeenCalledWith(params, undefined);
+  });
+  it('should delegate updateAttachment', () => {
+    const spy = jest.spyOn(service['rowService'], 'updateAttachment').mockReturnValue('ok' as any);
+    const params = { foo: 6 };
+    expect(service.updateAttachment(params as any)).toBe('ok');
+    expect(spy).toHaveBeenCalledWith(params);
   });
   it('should delegate removeAttachments', () => {
     const spy = jest.spyOn(service['rowService'], 'removeAttachment');
