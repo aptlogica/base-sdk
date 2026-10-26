@@ -60,4 +60,25 @@ describe('ColumnService', () => {
     service.reorder(params as any);
     expect(mockHttpClient.post).toHaveBeenCalledWith('/column/reorder', params);
   });
+
+  it.each([
+    ['reset', '/column/reset'],
+    ['bulkUpdate', '/column/bulk-update'],
+    ['trimWhitespace', '/column/trim-whitespace'],
+    ['caseNormalize', '/column/case-normalize'],
+    ['findReplace', '/column/find-replace'],
+    ['removeSpecialCharacters', '/column/remove-special-characters'],
+    ['removeDuplicates', '/column/remove-duplicates'],
+    ['removeFormatting', '/column/remove-formatting'],
+    ['mergeColumns', '/column/merge-columns'],
+    ['splitColumn', '/column/split'],
+    ['extractSubstring', '/column/extract-substring'],
+  ] as const)('should call http.post on %s', (method, endpoint) => {
+    const params = { table_id: 'tid', column_ids: ['c1'] };
+    const response = { success: true };
+    mockHttpClient.post.mockReturnValueOnce(response);
+    const result = (service[method] as (p: unknown) => unknown)(params);
+    expect(mockHttpClient.post).toHaveBeenCalledWith(endpoint, params);
+    expect(result).toBe(response);
+  });
 });
