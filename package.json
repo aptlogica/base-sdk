@@ -80,7 +80,6 @@
     "@types/resolve": "^1.20.6",
     "mime-db": "^1.54.0",
     "pretty-format": "30.3.0",
-    "js-tokens": "^7.0.0",
     "anymatch": {
       "picomatch": "^4.0.7"
     }
