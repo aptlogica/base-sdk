@@ -11,6 +11,8 @@ export interface CreateBase {
   description: string;
   workspace_id: string;
   image?: File | Blob;
+  /** Base-level settings. Sent as a JSON string form field. */
+  meta?: Record<string, unknown>;
 }
 
 export interface UpdateBase {
@@ -21,6 +23,8 @@ export interface UpdateBase {
   visibility?: string;
   image?: File | Blob;
   removeImage?: boolean;
+  /** Replaces the stored meta (not merged). Sent as a JSON string form field. */
+  meta?: Record<string, unknown>;
 }
 
 export interface BulkAddMembersRequest {

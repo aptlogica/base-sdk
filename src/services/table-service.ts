@@ -58,6 +58,23 @@ export class TableService {
     }
 
     /**
+     * Get table primary key and eligible columns
+     * GET /table/:id/primary-key
+     */
+    getPrimaryKey(tableId: string) {
+        return this.http.get<types.PrimaryKey>(`/table/${tableId}/primary-key`);
+    }
+
+    /**
+     * Set table primary key (column IDs in key order)
+     * PUT /table/:id/primary-key
+     */
+    updatePrimaryKey(tableId: string, columnIds: string[]) {
+        const body: types.UpdatePrimaryKey = { column_ids: columnIds };
+        return this.http.put<types.PrimaryKey>(`/table/${tableId}/primary-key`, body);
+    }
+
+    /**
      * Update table
      * PATCH /table/:id
      */
@@ -88,7 +105,6 @@ export class TableService {
         formData.append('workspace_id', params.workspace_id);
         formData.append('order_index', params.order_index.toString());
         formData.append('config', JSON.stringify(params.config));
-        formData.append('primary_column', params.primary_column);
         formData.append('file', params.file);
 
         const uploadLimits = this.http.getUploadLimits(true); // bulk upload

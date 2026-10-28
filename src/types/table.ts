@@ -20,6 +20,26 @@ export interface UpdateTable {
 }
 
 // -------- Columns --------
+
+/**
+ * Meta of a links column (the parts that matter for showing linked records).
+ * `display_column_id` is the id of the column of the linked table that the link shows as the label of a
+ * linked record. It is chosen when the link is created and can be edited later. When it is missing the
+ * first text column of the linked table is shown.
+ * When a link is created, `relation.inverse_display_column_id` sets the same for the partner link column
+ * on the other table; it is not stored on the new column.
+ */
+export interface LinkColumnMeta {
+  relation?: {
+    type?: 'one-to-one' | 'has-many' | 'many-to-many';
+    with?: string;
+    inverse_title?: string;
+    inverse_display_column_id?: string;
+  };
+  display_column_id?: string;
+  [k: string]: any;
+}
+
 export interface AddColumn {
   model_id: string;
   base_id: string;
@@ -55,11 +75,73 @@ export interface CreateRowOrBulkInsertRequest {
   updated_by?: string;
 }
 
+/**
+ * POST /row/data/insert works as an upsert:
+ * - without row_id: creates a record from `values`
+ * - with row_id: updates that record from `values` and/or one cell via column_id + value
+ */
 export interface InsertRowData {
   model_id: string;
-  column_id: string;
-  row_id: number;
-  value: any;
+  row_id?: number;
+  column_id?: string;
+  value?: any;
+  /** Column ID -> value */
+  values?: Record<string, any>;
+}
+
+export interface UpsertRow {
+  model_id: string;
+  /** Omit to create a new record */
+  row_id?: number;
+  /** Column ID -> value */
+  values: Record<string, any>;
+}
+
+export interface UpsertRowResult {
+  record: Record<string, any>;
+  related_record?: Record<string, any>;
+}
+
+// ============ PRIMARY KEY ============
+
+export interface PrimaryKeyColumn {
+  id: string;
+  title: string;
+  column_name: string;
+  uidt: string;
+  system: boolean;
+  in_key: boolean;
+  eligible: boolean;
+  /** Why the column can't be a key field */
+  reason?: string;
+}
+
+export interface PrimaryKey {
+  model_id: string;
+  /** Key order */
+  column_ids: string[];
+  column_names: string[];
+  /** True while link fields store this table's key values */
+  locked: boolean;
+  link_columns: string[];
+  columns: PrimaryKeyColumn[];
+}
+
+export interface UpdatePrimaryKey {
+  /** Key order */
+  column_ids: string[];
+}
+
+/** error.details when error.code === 'PKY_1004' */
+export interface PrimaryKeyViolation {
+  message: string;
+  columns: string[];
+  column_titles: string[];
+  null_count: number;
+  empty_fields: { column: string; title: string; count: number }[];
+  null_records: { id: number; title: string; missing?: string[] }[];
+  duplicate_groups: number;
+  duplicates: { values: Record<string, unknown>; count: number; record_ids: number[] }[];
 }
 
 export interface InsertRelationData {
@@ -167,7 +249,6 @@ config: {
     }>;
     [k: string]: any;
   };
-  primary_column: string;
 }
 
 export interface ResetColumn {
@@ -186,3 +267,112 @@ export interface BulkUpdateColumn {
   updates: Updates[];
 }
 
+// -------- Column Utilities --------
+export interface TrimWhitespace {
+  model_id: string;
+  columns: string[];
+  trim_mode: 'trim_both' | 'trim_leading' | 'trim_trailing' | 'collapse_spaces';
+}
+
+export interface CaseNormalizationRequest {
+  model_id: string;
+  columns: string[];
+  case_format: 'lowercase' | 'uppercase' | 'title_case' | 'sentence_case';
+}
+
+export interface FindReplaceRequest {
+  model_id: string;
+  columns: string[];
+  find_value: string;
+  replace_value: string;
+  match_type: 'match_case' | 'ignore_case' | 'match_entire_value';
+}
+
+export interface RemoveSpecialCharactersRequest {
+  model_id: string;
+  columns: string[];
+  special_characters_type: 'symbols'| 'currency_symbols'| 'brackets'| 'punctuation'| 'custom';
+  custom?: string[];
+}
+
+export interface RemoveDuplicatesRequest {
+  model_id: string;
+  columns: string[];
+  duplicate:'remove_row'| 'remove_duplicates'| 'remove_duplicates_matchCase';
+  keep_rule:| 'keep_first'| 'keep_last'| 'keep_latest_updated';
+}
+
+export interface RemoveFormattingRequest {
+  model_id: string;
+  columns: string[];
+  formatting: 'currency' | 'percentage' | 'separator' | 'phone' | 'date' | 'custom';
+  custom_pattern?: string[];
+}
+
+// -------- Merge Columns --------
+export interface MergeColumnsRequest {
+  model_id: string;
+  columns: string[];
+  new_column_title?: string;
+  merge_format: 'space' | 'comma' | 'dash' | 'custom';
+  custom_separator?: string;
+  keep_original_column: boolean;
+  add_at_end: boolean;
+}
+
+// -------- Extract Substring --------
+export interface ExtractSubstringRequest {
+  model_id: string;
+  column_id: string;
+  extraction_method: 'extraction_type' | 'between_characters';
+  extraction_type?: "email" | "keywords" | "mentions" | "tags" | "url" | "domain" | "emoji" | "phone" | "prefix";
+  start_after?: string;
+  end_before?: string;
+  keep_original_column: boolean;
+  add_at_end: boolean;
+}
+
+// -------- Column Split --------
+export type FixedLengthAction = 'before' | 'after';
+
+export interface SeparatorConfig {
+  type: 'separator';
+  config: {
+    separator: string;
+  };
+}
+
+export interface FixedLengthConfig {
+  type: 'fixedLength';
+  config: {
+    action: FixedLengthAction;
+    value: number;
+  };
+}
+
+export interface PatternConfig {
+  type: 'pattern';
+  config: {
+    pattern: string;
+  };
+}
+
+export type SplitByRequest = SeparatorConfig | FixedLengthConfig | PatternConfig;
+
+export interface ColumnSplitRequest {
+  modelId: string;
+  columnId: string;
+  splitBy: SplitByRequest;
+  keepOriginal: boolean;
+  where: 'next' | 'end';
+  limit?: number;
+}
+export interface FuzzyDuplicationRequest {
+  model_id: string;
+  columns: string[];
+  threshold: 'low' | 'medium' | 'high';
+  duplicate: 'remove_row' | 'remove_duplicates';
+  keep_rule: 'keep_first' | 'keep_last' | 'keep_latest_updated';
+  deduplication_mode?: 'automatic' | 'manual';
+  row_actions?: Record<string, 'keep' | 'delete' | 'clear' | 'none'>;
+}

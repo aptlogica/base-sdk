@@ -34,6 +34,9 @@ import { OrganizationService } from './services/organization-service';
 import { ColumnService } from './services/column-service';
 import { RowService } from './services/row-service';
 import { ViewService } from './services/view-service';
+import { AutomationService } from './services/automation-service';
+import { TableConstraintService } from './services/table-constraint-service';
+import { AdminService } from './services/admin-service';
 
 export class SereniBaseClient {
   private readonly http: HttpClient;
@@ -50,6 +53,9 @@ export class SereniBaseClient {
   public readonly columnService: ColumnService;
   public readonly rowService: RowService;
   public readonly viewService: ViewService;
+  public readonly automationService: AutomationService;
+  public readonly constraintService: TableConstraintService;
+  public readonly admin: AdminService;
 
   constructor(config: ClientConfig) {
     this.http = new HttpClient(config);
@@ -67,6 +73,9 @@ export class SereniBaseClient {
     this.columnService = new ColumnService(this.http);
     this.rowService = new RowService(this.http);
     this.viewService = new ViewService(this.http);
+    this.automationService = new AutomationService(this.http);
+    this.constraintService = new TableConstraintService(this.http);
+    this.admin = new AdminService(this.http);
 
     // Set up service injection for delegation
     this.userService.setWorkspaceService(this.workspace);
@@ -120,5 +129,7 @@ export class SereniBaseClient {
 export * from './types';
 export * from './client/http-client';
 export * from './services/auth-service';
+export * from './services/automation-service';
+export * from './services/table-constraint-service';
 
 export default SereniBaseClient;
